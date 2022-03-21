@@ -6,11 +6,12 @@ This project contains the front-end app using Vue.js components, bootstrap and C
 This project belongs with the Backend project on: https://github.com/GPossel/myfirstsite-php
 
 This project can be run with the following command:
-vue serve
+
+#### vue serve
 
 Following endpoint:
 
-### http:localhost:8080/
+#### http:localhost:8080/
 
 
 
