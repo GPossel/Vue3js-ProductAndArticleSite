@@ -61,8 +61,8 @@
             <div class="container-fluid">
                 <StockList/>
             </div>
-            <div> 
-                <MyContacts/>
+            <div class="container-fluid">
+            <ContactList/>
             </div>
         </section>
     </main>
@@ -70,24 +70,27 @@
 
 <script>
 import StockList from './components/StockList.vue'
-import MyContacts from './components/ContactList.vue'
-
+import ContactList from './components/ContactList.vue'
 
 export default {
   name: 'App',
   components: {
     StockList,
-    MyContacts
+    ContactList
     },
-  methods:
-  {
-    Logout()
+    data: () => ({
+        //
+    }),
+    methods:
     {
-      localStorage.clear();
-      window.location.reload();
-      alert("Hello");
+        Logout()
+        {
+        localStorage.clear();
+        window.location.reload();
+        alert("Hello");
+        }
     }
-  }
+
 }
 </script>
 <style>
