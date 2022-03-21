@@ -9,17 +9,16 @@ This project can be run with the following command:
 vue serve
 
 Following endpoint:
+http:localhost:8080/
 
+Backend calls:
 / GET http://localhost:8081/src/repository/contacts.php
-
 returns all contacts
 
 / GET http://localhost:8081/src/repository/contacts.php uri ?id=1
-
 returns contact on id
 
 / POST http://localhost:8081/src/repository/login.php form-data { "username": "gen", "psw": "gen" }
-
 returns JWT in header
 
 
