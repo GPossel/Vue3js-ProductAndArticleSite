@@ -1,24 +1,20 @@
 <template>
-  <v-container fill-height fluid>
-      <v-row justify="center">
-          <v-col cols="12" md="6" lg="4">
-              <v-card ref="form">
-                  <v-card-text>
-                      <v-alert v-if="error" type="error">
-                          {{ error }}
-                      </v-alert>
-                      <v-text-field v-model="authData.UserEmail" label="E-mail"></v-text-field>
-                      <v-text-field v-model="authData.Password" label="Password" type="password"></v-text-field>
-                  </v-card-text>
-                  <v-btn block large color="primary" elevation="2" @click="login()">
-                      Login
-                  </v-btn>
-              </v-card>
-          </v-col>
-      </v-row>
-  </v-container>   
+    <div class="topnav">
+		<div class="login-container">
+			<ul class="nav navbar">
+				<form action="/Login.php">
+					<input placeholder="Username" name="username" type="text">
+					<input placeholder="Password" name="psw"  type="text">
+					<button type="submit" @click="Logout()">Login</button>
+				</form>
+                <ul>
+                    <li><a href="">Forgot Password?</a> </li>
+                    <li><a href="">Not yet an account?</a> </li>
+                </ul>
+            </ul>
+        </div>
+	</div>
 </template>
-
 <script>
 export default {
     data(){

@@ -8667,23 +8667,41 @@ Text Domain: orbitthemes.com
   }
   
   .topnav input[type=text] {
-    padding: 6px;
+    padding: 6px 5px 5px 5px;
     margin-top: 8px;
+    margin-right: 8px;
     font-size: 17px;
     border: none;
-    width:120px;
+    width: 233px;
   }
   
   .topnav .login-container button {
     float: right;
-    padding: 6px 10px;
+    padding: 6px 15px 5px 15px;
     margin-top: 8px;
-    margin-right: 16px;
+    margin-left: 5px;
     background-color: #555;
     color: white;
     font-size: 17px;
     border: none;
     cursor: pointer;
+    width: 90px;
+  }
+
+  .topnav ul {
+    padding-left: 10px;
+    list-style-type: none;
+  }
+
+  .topnav ul li a {
+    font-size: 13px;
+    padding: 5px 5px 1px 5px;
+    margin: 1px 2px 0px 2px;
+    display: block;
+  }
+
+  .topnav a:hover{
+    background-color: lightblue;
   }
   
   .topnav .login-container button:hover {

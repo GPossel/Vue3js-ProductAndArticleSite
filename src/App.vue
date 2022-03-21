@@ -1,6 +1,7 @@
 <template>
+    <MyLoginBar/>
     <main id="main" role="main">
-          <section id="sidebar">
+        <section id="sidebar">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand text-center">
                     <a class="navbar-brand" href="#" id="header-logo">
@@ -62,7 +63,7 @@
                 <StockList/>
             </div>
             <div class="container-fluid">
-            <ContactList/>
+                <ContactList/>
             </div>
         </section>
     </main>
@@ -71,12 +72,14 @@
 <script>
 import StockList from './components/StockList.vue'
 import ContactList from './components/ContactList.vue'
+import MyLoginBar from './components/LoginMenu.vue'
 
 export default {
   name: 'App',
   components: {
     StockList,
-    ContactList
+    ContactList,
+    MyLoginBar
     },
     data: () => ({
         //
@@ -99,7 +102,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: #2c3e50;
+  color: #48515a;
   margin-top: 60px;
 }
 </style>

@@ -1,42 +1,40 @@
 <template>
-  <v-container>
-    <h1>Contacts</h1>
-    <v-data-table
-      :headers="headers"
-      :items="contacts"
-      :items-per-page="10"
-      class="elevation-1"
-      >
-    </v-data-table>
-  </v-container>
+  <table id='contactsTable' border='1' width='100%' style='border-collapse: collapse;'>
+       <tr>
+           <th>Id</th>
+           <th>Name</th>
+           <th>Email</th>
+           <th>Country</th>
+           <th>City</th>
+           <th>Job</th>
+       </tr>
+
+       <tr v-for='contact in this.data.contacts' v-bind:key="contact.id">
+           <td>{{ contact.id }}</td>
+           <td>{{ contact.name }}</td>
+           <td>{{ contact.email }}</td>
+           <td>{{ contact.country }}</td>
+           <td>{{ contact.city }}</td>
+           <td>{{ contact.job }}</td>
+       </tr>
+    </table>
 </template>
 
 <script>
 import axios from 'axios';
 
 export default {
-  data() { return { contacts: [], contact: {} } },
-  computed: {
-    headers() {
-      return [
-          { text: "Id", value: "id"},
-          { text: "Name", value: "name"},
-          { text: "Email", value: "email"},
-          { text: "City", value: "city"},
-          { text: "Country", value: "country"},
-          { text: "Job", value: "job"},
-      ];
-    }
-  },
+  name: 'ContactList',
+  data() { return { data: { contacts: [ { id: 1, name: "Gentle"} ],  } } },
   mounted() {
-    this.getContacts();
+    return this.getContacts();
   },
   methods: {
         getContacts() {
           axios.get('http://localhost:8081/src/repository/contacts.php')
           .then((response) => {
             console.log(response);
-            this.contacts = response.data;
+            this.data = response.data;
           })
           .catch(error => {
             console.log(error);
