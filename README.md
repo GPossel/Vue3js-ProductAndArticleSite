@@ -9,7 +9,10 @@ This project can be run with the following command:
 vue serve
 
 Following endpoint:
+
 http:localhost:8080/
+
+
 
 Backend calls:
 
