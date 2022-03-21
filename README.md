@@ -12,6 +12,7 @@ Following endpoint:
 http:localhost:8080/
 
 Backend calls:
+
 / GET http://localhost:8081/src/repository/contacts.php
 returns all contacts
 
