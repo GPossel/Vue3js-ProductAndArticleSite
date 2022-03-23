@@ -2,10 +2,10 @@
     <div class="topnav">
 		<div class="login-container">
 			<ul class="nav navbar">
-				<form action="/Login.php">
-					<input placeholder="Username" name="username" type="text">
-					<input placeholder="Password" name="psw"  type="text">
-					<button type="submit" @click="Logout()">Login</button>
+				<form>
+					<input placeholder="Username" v-model="username" type="text">
+					<input placeholder="Password" v-model="password"  type="password">
+					<button type="submit" @click="login()">Login</button>
 				</form>
                 <ul>
                     <li><a href="">Forgot Password?</a> </li>
@@ -16,27 +16,38 @@
 	</div>
 </template>
 <script>
+import axios from 'axios';
+
 export default {
     data(){
         return{
-            authData:{
-                UserEmail: "",
-                Password: ""
-            }
+                username: '',
+                password: ''
         }
     },
     methods: {
         login() {
-            // axios.post('../api/Login', { UserEmail: this.authData.UserEmail, Password: this.authData.Password })
-            // .then(response => {
-            //     if (response.data.accessToken && response.data.userType === 'Admin') {
-            //         localStorage.setItem('token', response.data.accessToken)
-            //         this.$store.state.token = true
-            //     }
-            // })
+            const formData = new FormData();
+            formData.append('username', this.username);
+            formData.append('pass', this.password);        
 
-            localStorage.setItem('token', 'MyFakeToken')
-            alert(this.authData.username + " " + this.authData.password)
+            axios.post('http://localhost:8081/src/repository/login.php', formData)
+            .then(response => {
+
+                if(response.status >= 200 && response.status <= 299)
+                {
+                    const jwt = response.data;
+                    this.JWT = jwt;
+
+                }
+                    console.log(response);
+                    var myToken = JSON.stringify('Bearer ' + response.data);
+                    localStorage.setItem('myJWT', myToken);
+                    alert(this.username + " " + this.password)
+            })
+            .catch(error => {
+                console.log(error);
+            })
         }
     }
 }
