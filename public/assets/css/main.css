@@ -8707,6 +8707,15 @@ Text Domain: orbitthemes.com
   .topnav .login-container button:hover {
     background-color: green;
   }
+
+  .topnav .login-container p {
+    padding: 6px 5px 5px 5px;
+    margin-top: 19px;
+    margin-right: 8px;
+    font-size: 17px;
+    width: 233px;
+    color: red;
+  }
   
   @media screen and (max-width: 600px) {
     .topnav .login-container {
@@ -8724,4 +8733,5 @@ Text Domain: orbitthemes.com
       border: 1px solid #ccc;  
     }
   }
+
 }

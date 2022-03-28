@@ -11,12 +11,7 @@
                 </li>
                 <hr>
                 <li>
-                    <a href="#">
-                        <i class="fa fa-categorieën"></i> Categorieën</a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-universal-gezondheid"></i> Gezondheid</a>
+                    <router-link to="/"> Home </router-link>
                 </li>
                 <li>
                     <a href="#">
@@ -25,16 +20,10 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fa fa-electronica"></i> Electronica</a>
+                    <router-link to="/ArtikelList"> StockList</router-link>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fa fa-support"></i> About</a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-address-card"></i> Contact</a>
+                    <router-link to="/ContactList"> Contacts </router-link>
                 </li>
                 <li>
                     <a href="#">
@@ -44,13 +33,7 @@
         </section>
         <section id="page-content">
             <div class="container-fluid">
-                <h1>Simple Website</h1>
-                <ul>
-                    <li>Responsive Toggling System.</li>
-                    <li>Menu will appear collapsed in small screens.</li>
-                    <li>For large devices, there is button to toggele menu.</li>
-                    <li>Animated Sidebar Menu using bootstrap 4 core components.</li>
-                </ul>     
+                <h1>Artikel Website</h1>
                 <p>
                 This website is only for educational purposes. <br>
                 Inholland Web Development 2 - 2022 <br>
@@ -59,26 +42,17 @@
                     <code>#page-content</code>.</p>
                 <a href="#toggle-menu" class="btn btn-primary" id="toggle-menu">Toggle Menu</a>
             </div>
-            <div class="container-fluid">
-                <StockList/>
-            </div>
-            <div class="container-fluid">
-                <ContactList/>
-            </div>
         </section>
+      <router-view></router-view>
     </main>
 </template>
 
 <script>
-import StockList from './components/StockList.vue'
-import ContactList from './components/ContactList.vue'
 import MyLoginBar from './components/LoginMenu.vue'
 
 export default {
   name: 'App',
   components: {
-    StockList,
-    ContactList,
     MyLoginBar
     },
     data: () => ({
@@ -90,7 +64,7 @@ export default {
         {
         localStorage.clear();
         window.location.reload();
-        alert("Hello");
+        alert("Goodbye!");
         }
     }
 
