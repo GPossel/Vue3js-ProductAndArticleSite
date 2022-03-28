@@ -7,7 +7,7 @@
            <input placeholder="Title" v-model="title" type="text">
            <input placeholder="Writer" v-model="writer" type="text">
            <input placeholder="Small text" v-model="innerText" type="text">
-           <textarea placeholder="Text" v-model="fullText" type="text"> </textarea>
+           <textarea placeholder="Write your article here..." v-model="fullText" type="text"> </textarea>
            <button class="btn type-primary" type="submit" @click="addArticle()">Add Article</button>
         </form>
           
@@ -67,7 +67,7 @@ export default {
             console.log(error);
           })
     },
-    addArticle()
+     addArticle()
     {
         console.log("Create article!")
 
