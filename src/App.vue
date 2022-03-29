@@ -20,7 +20,7 @@
                     </a>
                 </li>
                 <li>
-                    <router-link to="/ArtikelList"> StockList</router-link>
+                    <router-link to="/ArtikelList"> Articles</router-link>
                 </li>
                 <li>
                     <router-link to="/ContactList"> Contacts </router-link>
@@ -58,9 +58,15 @@ export default {
     data: () => ({
         //
     }),
+    mounted(){
+        return this.created();
+    },
     methods:
     {
-        Logout()
+        created() {
+            this.$store.dispatch('authLogin');
+        },
+        logout()
         {
         localStorage.clear();
         window.location.reload();

@@ -1,7 +1,7 @@
 <template>
     <div class="topnav">
 		<div class="login-container">
-			<ul class="nav navbar">
+			<ul v-if="!this.$store.getters.isAuthenticated" class="nav navbar">
                 <p class="error" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
 				<form>
 					<input placeholder="Username" v-model="username" type="text">
@@ -13,13 +13,15 @@
                     <li><a href="">Not yet an account?</a> </li>
                 </ul>
             </ul>
+			<ul v-if="this.$store.getters.isAuthenticated" class="nav navbar">
+                <button class="btn type-primary" type="submit"  @click="logout()">Log out</button>
+            </ul>
         </div>
 	</div>
 </template>
 <script>
-import axios from 'axios';
-
 export default {
+
     data(){
         return {
                 username: '',
@@ -29,28 +31,38 @@ export default {
     },
     methods: {
         login() {
-            const formData = new FormData();
-            formData.append('username', this.username);
-            formData.append('pass', this.password);        
-
-            axios.post('http://localhost:8081/src/repository/login.php', formData)
-            .then(response => {
-                if(response.status >= 200 && response.status <= 299)
-                {
-                    const jwt = response.data;
-                    this.JWT = jwt;
-                    var myToken = JSON.stringify('Bearer ' + response.data);
-                    localStorage.setItem('myJWT', myToken);
-                }
-                else {
-                    this.error = response.data;
-                    console.log(this.error);
-                }
+            this.$store.dispatch("login", {
+                username: this.username,
+                pass: this.password
             })
-            .catch(error => {
-                this.errormessage = "Wrong credentials.";
+            .then(
+                    (result) => { 
+                        this.$router.go("/ArtikelList");
+                        console.log(result);
+                    },
+                    (error) => { 
+                        this.errormessage = error;
+                        console.log(error);
+                    }
+                
+            )
+            .catch((error) => {
+                this.errormessage = "Wrong credentials";
                 console.log(error);
             })
+        },
+
+        logout()
+        {
+            this.$store.dispatch("logout")
+            .then(() => 
+            {
+                console.log("Loggin out...");
+            })
+            .catch((error) => {
+                this.errormessage = "Oops logout went wrong..";
+                console.log(error);
+            })        
         }
     }
 }

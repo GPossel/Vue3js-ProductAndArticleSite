@@ -82,7 +82,7 @@ export default {
               contact[key] = value;
           });
 
-          axios.post('http://localhost:8081/src/repository/contacts.php', formData)
+          axios.post('http://localhost:8081/src/repository/contacts.php', formData,  { headers: {'Authorization': 'Bearer ' + localStorage.getItem('myJWT') } })
           .then((repsonse) => {
             console.log(repsonse);
             this.contacts.push(contact);

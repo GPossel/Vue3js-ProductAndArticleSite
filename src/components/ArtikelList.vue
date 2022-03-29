@@ -2,7 +2,8 @@
   <section id="page-content"> 
   <div class="container-fluid">
         <div id='ArtikelList' class="ArtikelList">
-        <h1 class="">Write an article</h1>
+        <h1>Write an article</h1>
+        <p class="error" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
         <form class="articleForm">
            <input placeholder="Title" v-model="title" type="text">
            <input placeholder="Writer" v-model="writer" type="text">
@@ -22,6 +23,7 @@
                           <div class="writerBox"> {{ article.writer }} <br> {{ article.date }} </div> <br><br>
                           <div class="innerTextBox"> {{ article.innerText }} </div>
                           {{ article.fullText }}
+                          <button class="btn type-primary" @click="goToAdjust(article.id)">Adjust</button>
                       </div>
                   </div>
             </div>
@@ -33,7 +35,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
     name: 'ArtikelList',
@@ -49,7 +51,8 @@ export default {
                 date: "", 
                 writer: "", 
                 innerText: "", 
-                fullText: ""
+                fullText: "",
+                errormessage: "",
         }
    },
    mounted()
@@ -63,7 +66,7 @@ export default {
             console.log(response);
             this.data = response.data;
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           })
     },
@@ -83,15 +86,26 @@ export default {
               article[key] = value;
           });
 
-          axios.post('http://localhost:8081/src/repository/articles.php', formData)
+          const token = localStorage.getItem('myJWT');
+          axios.post('http://localhost:8081/src/repository/articles.php', formData, { headers: { 'Authorization' : token } })
           .then((repsonse) => {
             console.log(repsonse);
             this.getAtricles();
             this.resetForm();
           })
-          .catch(error => {
+          .catch((error) => {
+            if(error.response.status == 401)
+            {
+            this.errormessage = "Only authorized people can post articles. Please login.";
+            }
             console.log(error);
           })
+       },
+
+       goToAdjust(id)
+       {
+          alert("/Article?id=" + id);
+          this.$router.push("/ArticleList?id=" + id);
        },
 
        resetForm: function() {
@@ -166,5 +180,14 @@ export default {
     margin: 1px 2px 0px 2px;
     display: block;
     text-align: right;
+}
+
+.card button
+{
+  width: 10%;
+  height: 10%;
+    padding: 5px 5px 1px 5px;
+    margin: 1px 2px 0px 2px;
+  float: right;
 }
 </style>
