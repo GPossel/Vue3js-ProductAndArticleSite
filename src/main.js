@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import ArtikelList from './components/ArtikelList';
+import ArtikelPage from './components/ArtikelPage';
 import ContactList from './components/ContactList';
 import store from './store/store.js';
 
@@ -13,6 +14,7 @@ const Home = { template: '<div>Home</div>' }
 const routes = [
     { path: '/', component: Home },
     { path: '/ArtikelList', component: ArtikelList },
+    { path: '/ArtikelPage/:id', component: ArtikelPage },
     { path: '/ContactList', component: ContactList }
 ]
 

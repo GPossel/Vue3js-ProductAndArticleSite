@@ -104,8 +104,8 @@ export default {
 
        goToAdjust(id)
        {
-          alert("/Article?id=" + id);
-          this.$router.push("/ArticleList?id=" + id);
+          alert("/ArtikelPage/" + id);
+          this.$router.push("/ArtikelPage/" + id);
        },
 
        resetForm: function() {
