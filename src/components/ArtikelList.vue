@@ -9,7 +9,7 @@
            <input placeholder="Writer" v-model="writer" type="text">
            <input placeholder="Small text" v-model="innerText" type="text">
            <textarea placeholder="Write your article here..." v-model="fullText" type="text"> </textarea>
-           <button class="btn type-primary" type="submit" @click="addArticle()">Add Article</button>
+           <button class="btn type-primary delete-button" type="submit" @click="addArticle()">Add Article</button>
         </form>
           
         <h1>Articles </h1>
@@ -94,17 +94,12 @@ export default {
             this.resetForm();
           })
           .catch((error) => {
-            if(error.response.status == 401)
-            {
-            this.errormessage = "Only authorized people can post articles. Please login.";
-            }
-            console.log(error);
+              this.errormessage = error.response.data;
           })
        },
 
        goToAdjust(id)
        {
-          alert("/ArtikelPage/" + id);
           this.$router.push("/ArtikelPage/" + id);
        },
 
@@ -186,8 +181,8 @@ export default {
 {
   width: 10%;
   height: 10%;
-    padding: 5px 5px 1px 5px;
-    margin: 1px 2px 0px 2px;
+  padding: 5px 5px 1px 5px;
+  margin: 1px 2px 0px 2px;
   float: right;
 }
 </style>

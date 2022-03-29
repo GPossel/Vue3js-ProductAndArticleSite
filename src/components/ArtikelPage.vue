@@ -1,5 +1,8 @@
 .<template>
+<h1></h1>
     <div class="card2">
+        <button class="btn type-primary btn-danger" type="submit" @click="deleteArticle()">Delete</button>
+        <p class="errorArtikelPage" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
         <div class="card-body2">
             <h1 class="titleBox2">{{ title }}</h1>
             <div class="writerBox2"> {{ writer }} <br> {{ date }} </div> <br><br>
@@ -32,14 +35,35 @@ export default {
     methods: {
         getArticle() {
         const paramsId = this.$route.params.id;
-        axios.get('http://localhost:8081/src/repository/articles.php', { id: paramsId })
+        axios.get('http://localhost:8081/src/repository/articles.php?id=' + paramsId )
           .then((response) => {
-            console.log(response);
-            this.data = response.data;
+            console.log(response);            
+            this.id = response.data.id;
+            this.title = response.data.title;
+            this.date = response.data.date;
+            this.writer = response.data.writer;
+            this.innerText = response.data.innerText;
+            this.fullText = response.data.fullText;
           })
           .catch((error) => {
             console.log(error);
           })
+        },
+
+        deleteArticle()
+        {
+          const token = localStorage.getItem('myJWT');
+          const paramsId = this.$route.params.id;
+          axios.delete('http://localhost:8081/src/repository/articles.php?id=' + paramsId, { headers: { 'Authorization' : token } })
+          .then((response) => {
+            console.log(response);
+            this.$router.push("/ArtikelList");
+          })
+          .catch((error) => {
+            console.log(error);
+            this.errormessage = error.response.data;
+          })
+
         }
 
     }
@@ -50,9 +74,10 @@ export default {
 <style>
 
 .card2 {
-    padding: 15px 5% 15px 5%;
+    padding: 50px 5% 50px 5%;
     margin-left: 5%;
     margin-right: 5%;
+    margin: 15px 15px 15px 15px;
     background: rgb(255, 255, 255);
 }
 
@@ -86,22 +111,37 @@ export default {
     width: auto;
 }
 
-
 .fullText2 {
     display: inline-block;
     padding: 5px 5px 15px 5px;
     margin: 30px 2px 30px 2px;
     display: block;
     text-align: left;
+    font-size: 28px;
 }
-
 
 .card2 button
 {
-  width: 10%;
-  height: 10%;
-    padding: 5px 5px 1px 5px;
-    margin: 1px 2px 0px 2px;
+  display: block;
+  height: 50px;
+  width: 120px;
+  padding: -50px 5px 20px 5px;
+  margin: -50px 10px 10px 10px;
   float: right;
 }
+
+.delete-button {
+  padding: 5px 5px 20px 5px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.errorArtikelPage {
+  font-size: 25px;
+  float: right;
+  margin-top: -40px;
+  padding-right: 10px;
+  display: inline;
+}
+
 </style>

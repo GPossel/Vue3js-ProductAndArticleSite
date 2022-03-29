@@ -14,20 +14,7 @@
                     <router-link to="/"> Home </router-link>
                 </li>
                 <li>
-                    <a href="#">
-                        <i class="fa fa-object-group"></i> Financieel
-                        <span class="badge badge-dark">New</span>
-                    </a>
-                </li>
-                <li>
-                    <router-link to="/ArtikelList"> Articles</router-link>
-                </li>
-                <li>
-                    <router-link to="/ContactList"> Contacts </router-link>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-sign-out"></i> Sign Out</a>
+                    <router-link to="/ArtikelList"> Articles <span class="badge badge-dark">New</span> </router-link>
                 </li>
             </ul>
         </section>
