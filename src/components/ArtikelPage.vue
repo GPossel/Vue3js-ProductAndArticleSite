@@ -1,7 +1,7 @@
 .<template>
 <h1></h1>
     <div class="card2">
-        <button class="btn type-primary btn-warning" type="submit" @click="updateArticle()">Update</button>
+        <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">Update</button>
         <button class="btn type-primary btn-danger" type="submit" @click="deleteArticle()">Delete</button>
         <p class="errorArtikelPage" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
         <div class="card-body2">
@@ -74,6 +74,7 @@ export default {
             axios.post('http://localhost:8081/src/repository/articles.php?id=' + paramsId, formData, { headers: { 'Authorization' : token } })
             .then((repsonse) => {
                 console.log(repsonse);
+                this.changeUpdateMode();
             })
             .catch((error) => {
                 this.errormessage = error.response.data;
