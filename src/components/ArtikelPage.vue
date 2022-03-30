@@ -8,7 +8,8 @@
             <h1 class="titleBox2">{{ title }}</h1>
             <div class="writerBox2"> {{ writer }} <br> {{ date }} </div> <br><br>
             <div class="innerTextBox2"> {{ innerText }} </div>
-            <div class="fullText2"> {{ fullText }} </div>
+            <div v-html="fullText" style="white-space: pre-wrap;" class="fullText2"></div>
+            <div class="fullText2"></div>
         </div>
         <form v-if='this.updateMode == true' class="articleForm">
            <input placeholder="Title" v-model="title" type="text">
@@ -74,6 +75,7 @@ export default {
             axios.post('http://localhost:8081/src/repository/articles.php?id=' + paramsId, formData, { headers: { 'Authorization' : token } })
             .then((repsonse) => {
                 console.log(repsonse);
+                this.errormessage = "Updated!";
                 this.changeUpdateMode();
             })
             .catch((error) => {
@@ -124,7 +126,7 @@ export default {
 
 .innerTextBox2 {
     text-align: left;
-    padding: 5px 5px 1px 5px;
+    padding: 5px 5px 1px 25px;
     margin: 10px 2px 10px 2px;
     font-style: italic;
     font-size: 37px;
@@ -141,7 +143,7 @@ export default {
 }
 
 .titleBox2 {
-    padding: 5px 5px 1px 5px;
+    padding: 5px 5px 1px 25px;
     margin: 10px 2px 10px 2px;
     float: left;
     font-size: 60px;
@@ -150,7 +152,7 @@ export default {
 
 .fullText2 {
     display: inline-block;
-    padding: 5px 5px 15px 5px;
+    padding: 5px 5px 15px 25px;
     margin: 30px 2px 30px 2px;
     display: block;
     text-align: left;

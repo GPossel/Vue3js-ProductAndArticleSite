@@ -3,7 +3,7 @@
   <div class="container-fluid">
         <div id='ArtikelList' class="ArtikelList">
         <h1>Write an article</h1>
-        <p class="error" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
+        <p class="error text-danger" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
         <form class="articleForm">
            <input placeholder="Title" v-model="title" type="text">
            <input placeholder="Writer" v-model="writer" type="text">
@@ -22,7 +22,7 @@
                           <div class="titleBox">{{ article.title }}</div>
                           <div class="writerBox"> {{ article.writer }} <br> {{ article.date }} </div> <br><br>
                           <div class="innerTextBox"> {{ article.innerText }} </div>
-                          {{ article.fullText }}
+                          <div v-html="article.fullText" style="white-space: pre-wrap;"></div>
                           <button class="btn type-primary" @click="goToAdjust(article.id)">Adjust</button>
                       </div>
                   </div>
@@ -117,11 +117,16 @@ export default {
 
 <style>
 
+h1 {
+  padding-left: 25px;
+  padding-top: 15px;
+}
+
 .articleForm {
     height: 500px;
     width: 50%;
-    padding: 5px 5px 5px 5px;
-    margin: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 15px;
+    margin: 5px 5px 5% 5px;
     background: rgb(235, 238, 241);
 }
 
@@ -184,5 +189,10 @@ export default {
   padding: 5px 5px 1px 5px;
   margin: 1px 2px 0px 2px;
   float: right;
+}
+
+
+.error {
+  padding-left: 25px;
 }
 </style>
