@@ -17,14 +17,39 @@ Following endpoint:
 
 Backend calls:
 
-/ GET http://localhost:8081/src/repository/contacts.php
-returns all contacts
+Login
+  - / POST http://localhost:8081/src/repository/login.php
+                                                          formData:
+  
+      - returns JWT in header
+ 
+Articles
+  - / GET http://localhost:8081/src/repository/articles.php
+    - returns all articles on page
+  - / POST [AUTHORIZED] http://localhost:8081/src/repository/articles.php
 
-/ GET http://localhost:8081/src/repository/contacts.php uri ?id=1
-returns contact on id
 
-/ POST http://localhost:8081/src/repository/login.php form-data { "username": "gen", "psw": "gen" }
-returns JWT in header
+                                                                      formData:
+                                                                                title:A new Article
+                                                                                writer:G. Possel
+                                                                                innerText:A new Article about fun facts.
+                                                                                fullText:This article contains a lot of funny facts about PHP.
+      - creates a new article, if you are logged in
 
+
+  - / POST [AUTHORIZED] http://localhost:8081/src/repository/articles.php?id=4&action=insert
+
+
+                                                                        formData:
+                                                                                title:A new Article
+                                                                                writer:G. Possel
+                                                                                innerText:A new Article about fun facts.
+                                                                                fullText:This article contains a lot of funny facts about PHP.
+
+      - updates a article, if you are logged in
+  
+  - / DELETE [AUTHORIZED] http://localhost:8081/src/repository/articles.php?id=2
+      - deletes a article, if you are logged in
+                                                                                
 
 This project was made by Gentle (639567) and is only for educational purposes. 2022
