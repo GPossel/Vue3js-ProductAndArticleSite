@@ -29,11 +29,11 @@ Articles
   - / POST [AUTHORIZED] http://localhost:8081/src/repository/articles.php
 
 
-      formData:
-                title:A new Article
-                writer:G. Possel
-                innerText:A new Article about fun facts.
-                fullText:This article contains a lot of funny facts about PHP.
+                                        formData:
+                                                  title:A new Article
+                                                  writer:G. Possel
+                                                  innerText:A new Article about fun facts.
+                                                  fullText:This article contains a lot of funny facts about PHP.
                 
                 
       - creates a new article, if you are logged in
@@ -42,11 +42,11 @@ Articles
   - / POST [AUTHORIZED] http://localhost:8081/src/repository/articles.php?id=4&action=insert
 
 
-      formData:
-              title:A new Article
-              writer:G. Possel
-              innerText:A new Article about fun facts.
-              fullText:This article contains a lot of funny facts about PHP.
+                                        formData:
+                                                  title:A new Article
+                                                  writer:G. Possel
+                                                  innerText:A new Article about fun facts.
+                                                  fullText:This article contains a lot of funny facts about PHP.
 
       - updates a article, if you are logged in
   
