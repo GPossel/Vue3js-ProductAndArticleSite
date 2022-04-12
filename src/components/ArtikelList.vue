@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import {URL} from '../const-url.js'
 import axios from 'axios'
 
 export default {
@@ -53,7 +54,7 @@ export default {
                 innerText: "", 
                 fullText: "",
                 errormessage: "",
-        }
+      }
    },
    mounted()
    {
@@ -61,7 +62,7 @@ export default {
    },
    methods: {
       getAtricles(){
-          axios.get('http://localhost:8081/src/repository/articles.php')
+          axios.get(URL + 'articles.php')
           .then((response) => {
             console.log(response);
             this.data = response.data;
@@ -87,7 +88,7 @@ export default {
           });
 
           const token = localStorage.getItem('myJWT');
-          axios.post('http://localhost:8081/src/repository/articles.php', formData, { headers: { 'Authorization' : token } })
+          axios.post(URL + 'articles.php', formData, { headers: { 'Authorization' : token } })
           .then((repsonse) => {
             console.log(repsonse);
             this.getAtricles();

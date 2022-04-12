@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import {URL} from '../const-url.js'
 import axios from 'axios';
 
 const store = createStore(
@@ -45,7 +46,7 @@ const store = createStore(
                 formData.append('username', parameters.username);
                 formData.append('pass', parameters.pass); 
 
-                axios.post("http://localhost:8081/src/repository/login.php", formData)
+                axios.post(URL + "/login.php", formData)
                     .then((response) => {
                     if(response.status == 200)
                         {

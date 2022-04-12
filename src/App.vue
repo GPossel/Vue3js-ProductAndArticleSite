@@ -28,7 +28,6 @@
                 Make sure to keep all page content within the
                     <code>#page-content</code>.</p>
                 <a href="#toggle-menu" class="btn btn-primary" id="toggle-menu">Toggle Menu</a>
-                <button class="btn btn-success doneerButton" @click="redirectTikkie()">Donatie voor de arme student</button>
             </div>
         </section>
       <router-view></router-view>
@@ -60,12 +59,6 @@ export default {
         window.location.reload();
         alert("Goodbye!");
         },
-
-        redirectTikkie()
-        {
-            alert("Wow! Alvast mega bedankt!");
-            window.open("https://tikkie.me/pay/sgu0v23p2aep48ucd2l9", '_blank');
-        }
     }
 
 }
