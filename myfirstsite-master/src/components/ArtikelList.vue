@@ -3,7 +3,7 @@
   <div class="container-fluid">
         <div id='ArtikelList' class="ArtikelList">
         <h1>Write an article</h1>
-        <p class="error text-danger" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
+        <p class="error text-danger" v-if='this.errormessage != null'>{{ this.errormessage }}</p>
         <form class="articleForm">
            <input placeholder="Title" v-model="title" type="text">
            <input placeholder="Writer" v-model="writer" type="text">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {URL} from '../const-url.js'
+import { URL } from '../const-url.js'
 import axios from 'axios'
 
 export default {
@@ -43,15 +43,15 @@ export default {
     data()
         {
             return {
-                data : {
+                data: {
                     articles: [
-                     { id: 1, title: "", date: "", writer: "", innerText: "", fullText: "" },
-                    ],       
+                     { id: 1, title: "title", date: "2023-09-09 19:00", writer: "writer", innerText: "FakeData", fullText: "FakeDataFull" },
+                    ]
                 },
-                title: "", 
-                date: "", 
-                writer: "", 
-                innerText: "", 
+                title: "",
+                date: "",
+                writer: "",
+                innerText: "",
                 fullText: "",
                 errormessage: "",
       }
@@ -62,62 +62,60 @@ export default {
    },
    methods: {
       getAtricles(){
-          axios.get(URL + 'articles.php')
+          axios.get(URL + 'articles/all')
           .then((response) => {
             console.log(response);
-            this.data = response.data;
+            console.log(response.data);
+            this.data.articles = response.data;
           })
           .catch((error) => {
             console.log(error);
           })
-    },
-     addArticle()
-    {
+      },
+      addArticle() {
         console.log("Create article!")
+        const token = localStorage.getItem('JWT');
 
-          let formData = new FormData();
-          console.log("title:", this.title)
-          formData.append('title', this.title)
-          formData.append('writer', this.writer)
-          formData.append('innerText', this.innerText)
-          formData.append('fullText', this.fullText)
+        var json = JSON.stringify({
+          'title': this.title,
+          'writer': this.writer,
+          'innerText': this.innerText,
+          'fullText': this.fullText
+        });
 
-          var article = {};
-          formData.forEach(function(value, key){
-              article[key] = value;
-          });
-
-          const token = localStorage.getItem('myJWT');
-          axios.post(URL + 'articles.php', formData, { headers: { 'Authorization' : token } })
-          .then((repsonse) => {
-            console.log(repsonse);
-            this.getAtricles();
-            this.resetForm();
-          })
-          .catch((error) => {
-              this.errormessage = error.response.data;
-          })
-       },
-
-       goToAdjust(id)
-       {
+        axios.post(URL + 'articles/create', json,
+        {
+          headers: { 
+            'Content-Type' : "application/json",
+            'Authorization' : token
+        }
+        })
+        .then((repsonse) => {
+          console.log(repsonse);
+          this.getAtricles();
+          this.resetForm();
+        })
+        .catch((error) => {
+          console.log(error);
+          this.errormessage = error.response.data;
+        })
+      },
+      goToAdjust(id)
+      {
           this.$router.push("/ArtikelPage/" + id);
-       },
-
-       resetForm: function() {
+      },
+      resetForm: function() {
             this.title = '';
             this.date = '';
             this.writer = '';
             this.innerText = '';
             this.fullText = '';
-        },
-
+      },
    }
 }
 </script>
 
 <style>
-
 h1 {
   padding-left: 25px;
   padding-top: 15px;
@@ -191,7 +189,6 @@ h1 {
   margin: 1px 2px 0px 2px;
   float: right;
 }
-
 
 .error {
   padding-left: 25px;

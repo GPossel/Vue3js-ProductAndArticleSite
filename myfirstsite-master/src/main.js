@@ -4,7 +4,7 @@ import ArtikelList from './components/ArtikelList';
 import ArtikelPage from './components/ArtikelPage';
 import store from './store/store.js';
 
-import {createRouter, createWebHashHistory} from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 import '../public/assets/css/main.css'
 
@@ -25,4 +25,3 @@ createApp(App)
 .use(store)
 .use(router)
 .mount('#app')
-

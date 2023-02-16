@@ -1,7 +1,7 @@
 <template>
     <MyLoginBar/>
     <main id="main" role="main">
-        <section id="sidebar">
+        <section id="sidebar" class="sidebar">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand text-center">
                     <a class="navbar-brand" href="#" id="header-logo">
@@ -80,5 +80,4 @@ export default {
 .doneerButton {
     margin: 0px 70px 0px 70px
 }
-
 </style>

@@ -1,4 +1,4 @@
-.<template>
+<template>
 <h1></h1>
     <div class="card2">
         <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">Update</button>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import {URL} from '../const-url.js'
 import axios from 'axios'
 
 export default {
@@ -30,7 +31,7 @@ export default {
     {
         return {
             id: 1,
-            title: "Citroenwater, een wondermiddel?", 
+            title: "[data] Citroenwater, een wondermiddel?", 
             date: "01-01-2022", 
             writer: "G. Possel", 
             innerText: "Citroenwater heeft vele gezondheidsvoordelen.", 
@@ -45,7 +46,7 @@ export default {
     methods: {
         getArticle() {
         const paramsId = this.$route.params.id;
-        axios.get('http://localhost:8081/src/repository/articles.php?id=' + paramsId )
+        axios.get(URL + 'articles/' + paramsId + '/get')
           .then((response) => {
             console.log(response);            
             this.id = response.data.id;
@@ -64,15 +65,17 @@ export default {
           if(this.updateMode == true)
           {
             const paramsId = this.$route.params.id;
-            let formData = new FormData();
-            formData.append('action', 'insert')
-            formData.append('title', this.title)
-            formData.append('writer', this.writer)
-            formData.append('innerText', this.innerText)
-            formData.append('fullText', this.fullText)
+            var json = JSON.stringify({
+              'title': this.title,
+              'writer': this.writer,
+              'innerText': this.innerText,
+              'fullText': this.fullText
+            });
 
-            const token = localStorage.getItem('myJWT');
-            axios.post('http://localhost:8081/src/repository/articles.php?id=' + paramsId, formData, { headers: { 'Authorization' : token } })
+            const token = localStorage.getItem('JWT');
+            axios.put(URL + 'articles/'  + paramsId + '/update', json, { 
+              headers: { 'Authorization' : token } 
+            })
             .then((repsonse) => {
                 console.log(repsonse);
                 this.errormessage = "Updated!";
@@ -88,9 +91,11 @@ export default {
         },
         deleteArticle()
         {
-          const token = localStorage.getItem('myJWT');
+          const token = localStorage.getItem('JWT');
           const paramsId = this.$route.params.id;
-          axios.delete('http://localhost:8081/src/repository/articles.php?id=' + paramsId, { headers: { 'Authorization' : token } })
+          axios.delete(URL + 'articles/'  + paramsId + '/delete', { 
+            headers: { 'Authorization' : token } 
+          })
           .then((response) => {
             console.log(response);
             this.$router.push("/ArtikelList");
@@ -101,7 +106,8 @@ export default {
           })
         },
         changeUpdateMode(){
-          if(this.updateMode == true) { this.updateMode = false}
+          if(this.updateMode == true) { 
+            this.updateMode = false}
           else {
             this.updateMode = true;
           }
@@ -111,7 +117,6 @@ export default {
 </script>
 
 <style>
-
 .card2 {
     padding: 50px 5% 50px 5%;
     margin-left: 5%;
@@ -192,5 +197,4 @@ export default {
   background-color: #007bff;
   border-color: #007bff;
 }
-
 </style>

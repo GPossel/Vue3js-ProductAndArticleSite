@@ -8545,17 +8545,9 @@ Text Domain: orbitthemes.com
   transition: all 0.5s ease;
 }
 
-#main.toggled {
-  padding-left: 250px;
-}
-
-#main.toggled #sidebar {
-  width: 250px;
-}
-
 #main #sidebar {
   z-index: 1000;
-  position: fixed;
+  position: absolute;
   left: 250px;
   width: 0;
   height: 100%;
@@ -8566,6 +8558,14 @@ Text Domain: orbitthemes.com
   -webkit-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
+}
+
+#main.toggled {
+  padding-left: 250px;
+}
+
+#main.toggled #sidebar {
+  width: 250px;
 }
 
 #main #sidebar .sidebar-nav {

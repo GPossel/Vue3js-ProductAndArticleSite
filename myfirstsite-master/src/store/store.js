@@ -1,11 +1,11 @@
 import { createStore } from 'vuex';
-import {URL} from '../const-url.js'
+import { URL } from '../const-url.js'
 import axios from 'axios';
 
 const store = createStore(
     {
         state: {
-            token:  localStorage.getItem('myJWT'),
+            token:  localStorage.getItem('JWT'),
             username: localStorage.getItem('username'),
             errormessages: ''
         },
@@ -26,9 +26,8 @@ const store = createStore(
         },
         actions: {
             authLogin({ commit }){
-                const token = localStorage.getItem('myJWT');
+                const token = localStorage.getItem('JWT');
                 const username = localStorage.getItem('username');
-
                 if(token && username) {
                     axios.defaults.headers.common["Authorization"] = 'Bearer ' + token;
 
@@ -42,11 +41,17 @@ const store = createStore(
             login({ commit }, parameters)
             {
                 return new Promise((resolve, reject) => {
-                const formData = new FormData();
-                formData.append('username', parameters.username);
-                formData.append('pass', parameters.pass); 
 
-                axios.post(URL + "/login.php", formData)
+                var json = JSON.stringify({
+                    'username' : parameters.username,
+                    'password' : parameters.pass
+                });
+
+                axios.post(URL + "users/login", json, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                     .then((response) => {
                     if(response.status == 200)
                         {
@@ -55,7 +60,7 @@ const store = createStore(
                             this.JWT = jwt;
                             var myToken = 'Bearer ' + response.data;
                             // set localStorage
-                            localStorage.setItem('myJWT', myToken);
+                            localStorage.setItem('JWT', myToken);
                             localStorage.setItem('username', parameters.username);
                             axios.defaults.headers.common['Authorization'] = myToken;
                             resolve('Login successful')

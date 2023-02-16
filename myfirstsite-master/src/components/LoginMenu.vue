@@ -21,8 +21,7 @@
 </template>
 <script>
 export default {
-
-    data(){
+    data() {
         return {
                 username: '',
                 password: '',
@@ -69,5 +68,4 @@ export default {
 </script>
 
 <style>
-
 </style>
