@@ -1,59 +1,50 @@
 <template>
-  <section id="page-content"> 
-  <div class="container-fluid">
-        <div id='ArtikelList' class="ArtikelList">
-        <h1>Write an article</h1>
-        <p class="error text-danger" v-if='this.errormessage != null'>{{ this.errormessage }}</p>
-        <form class="articleForm">
-           <input placeholder="Title" v-model="title" type="text">
-           <input placeholder="Writer" v-model="writer" type="text">
-           <input placeholder="Small text" v-model="innerText" type="text">
-           <textarea placeholder="Write your article here..." v-model="fullText" type="text"> </textarea>
-           <button class="btn type-primary delete-button" type="submit" @click="addArticle()">Add Article</button>
-        </form>
-          
-        <h1>Articles </h1>
-        <div class="row">
-        <!-- placeholder card start -->
-        <div class="col-md-6 col-xxl-4">
-            <div v-for='article in this.data.articles' v-bind:key="article.id">
-                  <div class="card">
-                      <div class="card-body">
-                          <div class="titleBox">{{ article.title }}</div>
-                          <div class="writerBox"> {{ article.writer }} <br> {{ article.date }} </div> <br><br>
-                          <div class="innerTextBox"> {{ article.innerText }} </div>
-                          <div v-html="article.fullText" style="white-space: pre-wrap;"></div>
-                          <button class="btn type-primary" @click="goToAdjust(article.id)">Adjust</button>
-                      </div>
+<div class="container-fluid">
+      <div class="row flex-nowrap">
+        <SideBarMenu></SideBarMenu>
+        <div class="col py-3 p-5 bg-secondary">
+          <section class="p-1 m-2 bg-secondary bg-gradient">
+                <h1>Articles</h1>
+                <div class="row">
+                <!-- placeholder card start -->
+                  <div class="col-md-10 col-xxl-4">
+                    <div class="align-middel" v-for='article in this.data.articles' v-bind:key="article.id">
+                          <div class="card bg-white form-control p-2 m-2">
+                              <div class="card-body">
+                                  <div class="titleBox">{{ article.title }}</div>
+                                  <div class="writerBox"> {{ article.writer }} <br> {{ article.date }} </div> <br><br>
+                                  <div class="innerTextBox"> {{ article.innerText }} </div>
+                                  <div v-html="article.fullText" style="white-space: pre-wrap;"></div>
+                                  <button class="btn btn-primary" @click="goToAdjust(article.id)">Adjust</button>
+                              </div>
+                          </div>
+                    </div>
                   </div>
-            </div>
-          </div>
-          </div>
-        </div>
+                </div>
+          </section>
+    </div>
   </div>
-  </section>
+</div>
 </template>
 
 <script>
 import { URL } from '../const-url.js'
 import axios from 'axios'
+import SideBarMenu from './SideBarMenu.vue'
 
 export default {
     name: 'ArtikelList',
+    components: {
+        SideBarMenu
+    },
     data()
-        {
+      {
             return {
                 data: {
                     articles: [
                      { id: 1, title: "title", date: "2023-09-09 19:00", writer: "writer", innerText: "FakeData", fullText: "FakeDataFull" },
                     ]
-                },
-                title: "",
-                date: "",
-                writer: "",
-                innerText: "",
-                fullText: "",
-                errormessage: "",
+                }
       }
    },
    mounted()
@@ -72,37 +63,9 @@ export default {
             console.log(error);
           })
       },
-      addArticle() {
-        console.log("Create article!")
-        const token = localStorage.getItem('JWT');
-
-        var json = JSON.stringify({
-          'title': this.title,
-          'writer': this.writer,
-          'innerText': this.innerText,
-          'fullText': this.fullText
-        });
-
-        axios.post(URL + 'articles/create', json,
-        {
-          headers: { 
-            'Content-Type' : "application/json",
-            'Authorization' : token
-        }
-        })
-        .then((repsonse) => {
-          console.log(repsonse);
-          this.getAtricles();
-          this.resetForm();
-        })
-        .catch((error) => {
-          console.log(error);
-          this.errormessage = error.response.data;
-        })
-      },
       goToAdjust(id)
       {
-          this.$router.push("/ArtikelPage/" + id);
+          this.$router.push("/articles/" + id);
       },
       resetForm: function() {
             this.title = '';
@@ -119,45 +82,6 @@ export default {
 h1 {
   padding-left: 25px;
   padding-top: 15px;
-}
-
-.articleForm {
-    height: 500px;
-    width: 50%;
-    padding: 5px 5px 5px 15px;
-    margin: 5px 5px 5% 5px;
-    background: rgb(235, 238, 241);
-}
-
-.articleForm button {
-  padding: auto;
-  margin-left: 20px;
-  margin-bottom: 10px;
-  width: 50%;    
-  color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.articleForm input {
-  padding: auto;
-  margin-left: 20px;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  font-size: 15px;
-  border: none;
-}
-
-.articleForm textarea 
-{
-   padding: auto;
-   margin-left: 20px;
-   margin-bottom: 10px;
-   display: block;
-   width: 95%;
-   height: 70%;
-   resize: none;
-   border: none;
 }
 
 .innerTextBox {
@@ -188,9 +112,5 @@ h1 {
   padding: 5px 5px 1px 5px;
   margin: 1px 2px 0px 2px;
   float: right;
-}
-
-.error {
-  padding-left: 25px;
 }
 </style>

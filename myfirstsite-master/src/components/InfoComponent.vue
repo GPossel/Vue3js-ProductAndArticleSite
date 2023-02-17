@@ -1,6 +1,10 @@
 <template>
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+        <SideBarMenu></SideBarMenu>
+        <div class="col py-3 bg-white p-5">
           <section id="page-content">
-            <div class="container-fluid bg-white p-5">
+            <div class="container-fluid">
                 <h1>Artikel Website</h1>
                 <p>
                 This website is only for educational purposes. <br>
@@ -11,11 +15,25 @@
                 <a href="#toggle-menu" class="btn btn-primary" id="toggle-menu">Toggle Menu</a>
             </div>
         </section>
+        </div>
+        </div>
+    </div>
 </template>
 
 <script>
-export default {
+import SideBarMenu from './SideBarMenu.vue';
 
+export default {
+    name: 'InfoComponent',
+    components: {
+        SideBarMenu
+    },
+    data(){
+        return{
+        }
+    },
+    mounted(){
+    }
 }
 </script>
 

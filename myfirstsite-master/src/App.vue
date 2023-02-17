@@ -8,35 +8,29 @@
       </div>
     </nav>
   </header>
-    <div class="container-fluid container-custom-resize">
-      <div class="row">
-          <div class="col-sm-auto">
-              <SidebarMenu></SidebarMenu>
-          </div>
-          <div class="col m-2 p-1">
-              <InfoComponent></InfoComponent>
-          </div>
-      </div>
-    </div>
+  <main class="bg-primary flex pt-0 main">
+    <router-view></router-view>
+    <ArtikelList></ArtikelList>
+  </main>
 </template>
 
 <script>
+import ArtikelList from './components/ArtikelList.vue'
 import MyLoginBar from './components/LoginMenu.vue'
 import MySearchBar from './components/SearchBar.vue'
-import SidebarMenu from './components/SideBarMenu.vue'
-import InfoComponent from './components/InfoComponent.vue'
 
 export default {
   name: 'App',
   components: {
     MyLoginBar,
     MySearchBar,
-    SidebarMenu,
-    InfoComponent
+    ArtikelList
+},
+    data() {
+      return {
+
+      }
     },
-    data: () => ({
-        //
-    }),
     mounted(){
         return this.created();
     },
@@ -66,18 +60,38 @@ export default {
   height: 100%;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-areas: none;
+  gap:10px;
+  padding:10px;
+}
+
 /* Made a custom inheritance instance ! :D 
 (This is used on top of the bootstrap prop 'contianer-fluid'
 -> only updating the width to a custom property) */
 .container-fluid.container-custom-resize { 
-  width: 1600px;
+  width: 1920px;
 }
 
 .container-fluid p {
-    padding-left: 15px;
+  padding-left: 15px;
 }
 
 .doneerButton {
-    margin: 0px 70px 0px 70px
+  margin: 0px 70px 0px 70px;
+}
+
+.leftMenu {
+    display: block;
+    text-align: center;
+    position: auto;
+    left: 0;
+    top: 0;
+    height: 100%;
+    border: 1px solid #778390;
+    width: 22%;
+    background-color: #778390;
+    color: white;
 }
 </style>
