@@ -1,5 +1,4 @@
 <template>
-<h1></h1>
     <div class="card2">
         <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">Update</button>
         <button class="btn type-primary btn-danger" type="submit" @click="deleteArticle()">Delete</button>

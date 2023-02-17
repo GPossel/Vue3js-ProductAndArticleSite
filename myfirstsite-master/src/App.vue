@@ -1,46 +1,38 @@
 <template>
-    <MyLoginBar/>
-    <main id="main" role="main">
-        <section id="sidebar" class="sidebar">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand text-center">
-                    <a class="navbar-brand" href="#" id="header-logo">
-                        <img src="https://raw.githubusercontent.com/orbitthemes/Orbit-Themes/master/assets/logo.png" class="img-fluid" width="200"
-                            alt="Orbit Themes">
-                    </a>
-                </li>
-                <hr>
-                <li>
-                    <router-link to="/"> Home </router-link>
-                </li>
-                <li>
-                    <router-link to="/ArtikelList"> Articles <span class="badge badge-dark">New</span> </router-link>
-                </li>
-            </ul>
-        </section>
-        <section id="page-content">
-            <div class="container-fluid">
-                <h1>Artikel Website</h1>
-                <p>
-                This website is only for educational purposes. <br>
-                Inholland Web Development 2 - 2022 <br>
-                639567 Gentle Possel <br>
-                Make sure to keep all page content within the
-                    <code>#page-content</code>.</p>
-                <a href="#toggle-menu" class="btn btn-primary" id="toggle-menu">Toggle Menu</a>
-            </div>
-        </section>
-      <router-view></router-view>
-    </main>
+  <header>
+    <nav class="navbar navbar-light bg-primary">
+          <div class="container-fluid container-custom-resize">
+            <a class="navbar-brand text-white a-inline-flex" href="#">ArtikelWeb</a>
+            <MySearchBar></MySearchBar>
+            <MyLoginBar></MyLoginBar>
+      </div>
+    </nav>
+  </header>
+    <div class="container-fluid container-custom-resize">
+      <div class="row">
+          <div class="col-sm-auto">
+              <SidebarMenu></SidebarMenu>
+          </div>
+          <div class="col m-2 p-1">
+              <InfoComponent></InfoComponent>
+          </div>
+      </div>
+    </div>
 </template>
 
 <script>
 import MyLoginBar from './components/LoginMenu.vue'
+import MySearchBar from './components/SearchBar.vue'
+import SidebarMenu from './components/SideBarMenu.vue'
+import InfoComponent from './components/InfoComponent.vue'
 
 export default {
   name: 'App',
   components: {
-    MyLoginBar
+    MyLoginBar,
+    MySearchBar,
+    SidebarMenu,
+    InfoComponent
     },
     data: () => ({
         //
@@ -51,13 +43,13 @@ export default {
     methods:
     {
         created() {
-            this.$store.dispatch('authLogin');
+          this.$store.dispatch('authLogin');
         },
         logout()
         {
-        localStorage.clear();
-        window.location.reload();
-        alert("Goodbye!");
+          localStorage.clear();
+          window.location.reload();
+          alert("Goodbye!");
         },
     }
 
@@ -71,6 +63,14 @@ export default {
   text-align: left;
   color: #48515a;
   margin-top: 60px;
+  height: 100%;
+}
+
+/* Made a custom inheritance instance ! :D 
+(This is used on top of the bootstrap prop 'contianer-fluid'
+-> only updating the width to a custom property) */
+.container-fluid.container-custom-resize { 
+  width: 1600px;
 }
 
 .container-fluid p {
