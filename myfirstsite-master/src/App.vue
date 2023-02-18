@@ -10,12 +10,10 @@
   </header>
   <main class="bg-primary flex pt-0 main">
     <router-view></router-view>
-    <ArtikelList></ArtikelList>
   </main>
 </template>
 
 <script>
-import ArtikelList from './components/ArtikelList.vue'
 import MyLoginBar from './components/LoginMenu.vue'
 import MySearchBar from './components/SearchBar.vue'
 
@@ -23,9 +21,8 @@ export default {
   name: 'App',
   components: {
     MyLoginBar,
-    MySearchBar,
-    ArtikelList
-},
+    MySearchBar
+    },
     data() {
       return {
 

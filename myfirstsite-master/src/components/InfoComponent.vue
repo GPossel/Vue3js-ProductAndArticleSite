@@ -6,7 +6,7 @@
           <section id="page-content">
             <div class="container-fluid">
                 <h1>Artikel Website</h1>
-                <p>
+                <p class="fs-3 p-2 m-2">
                 This website is only for educational purposes. <br>
                 Inholland Web Development 2 - 2022 <br>
                 639567 Gentle Possel <br>

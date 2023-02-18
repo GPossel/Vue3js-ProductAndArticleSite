@@ -2,14 +2,14 @@
 <div class="container-fluid">
       <div class="row flex-nowrap">
         <SideBarMenu></SideBarMenu>
-        <div class="col py-3 p-5 bg-secondary">
-          <section class="p-1 m-2 bg-secondary bg-gradient">
+        <div class="col py-3 bg-white p-5">
+          <section id="page-content" class="p-1 m-2">
                 <h1>Articles</h1>
                 <div class="row">
                 <!-- placeholder card start -->
                   <div class="col-md-10 col-xxl-4">
-                    <div class="align-middel" v-for='article in this.data.articles' v-bind:key="article.id">
-                          <div class="card bg-white form-control p-2 m-2">
+                    <div class="align-middle" v-for='article in this.data.articles' v-bind:key="article.id">
+                          <div class="card border border-primary form-control p-2 m-2">
                               <div class="card-body">
                                   <div class="titleBox">{{ article.title }}</div>
                                   <div class="writerBox"> {{ article.writer }} <br> {{ article.date }} </div> <br><br>
@@ -39,13 +39,13 @@ export default {
     },
     data()
       {
-            return {
+        return {
                 data: {
                     articles: [
                      { id: 1, title: "title", date: "2023-09-09 19:00", writer: "writer", innerText: "FakeData", fullText: "FakeDataFull" },
                     ]
                 }
-      }
+        }
    },
    mounted()
    {
@@ -55,7 +55,6 @@ export default {
       getAtricles(){
           axios.get(URL + 'articles/all')
           .then((response) => {
-            console.log(response);
             console.log(response.data);
             this.data.articles = response.data;
           })
@@ -105,12 +104,4 @@ h1 {
     text-align: right;
 }
 
-.card button
-{
-  width: 10%;
-  height: 10%;
-  padding: 5px 5px 1px 5px;
-  margin: 1px 2px 0px 2px;
-  float: right;
-}
 </style>

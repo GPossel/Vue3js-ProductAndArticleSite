@@ -1,8 +1,11 @@
 import { createApp } from 'vue';
 import App from './App.vue';
+import HomePage from './components/HomePage';
 import ArtikelList from './components/ArtikelList';
 import ArtikelPage from './components/ArtikelPage';
 import ArtikelCreatePage from './components/ArtikelCreatePage';
+import ProductList from './components/ProductList';
+import ProductCreatePage from './components/ProductCreatePage';
 import InfoComponent from './components/InfoComponent';
 
 import store from './store/store.js';
@@ -11,13 +14,13 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 import '../public/assets/css/main.css'
 
-const Home = { template: '<div>Home</div>' }
-
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', component: HomePage },
     { path: '/articles', component: ArtikelList },
     { path: '/articles/:id', component: ArtikelPage },
     { path: '/create/article', component: ArtikelCreatePage },
+    { path: '/products', component: ProductList },
+    { path: '/products/create', component: ProductCreatePage },
     { path: '/info', component: InfoComponent }
 ]
 
