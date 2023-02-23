@@ -6,6 +6,7 @@ import ArtikelPage from './components/ArtikelPage';
 import ArtikelCreatePage from './components/ArtikelCreatePage';
 import ProductList from './components/ProductList';
 import ProductCreatePage from './components/ProductCreatePage';
+import ProductViewSingle from './components/ProductViewSingle';
 import InfoComponent from './components/InfoComponent';
 
 import store from './store/store.js';
@@ -20,6 +21,7 @@ const routes = [
     { path: '/articles/:id', component: ArtikelPage },
     { path: '/create/article', component: ArtikelCreatePage },
     { path: '/products', component: ProductList },
+    { path: '/products/:id', component: ProductViewSingle },
     { path: '/products/create', component: ProductCreatePage },
     { path: '/info', component: InfoComponent }
 ]

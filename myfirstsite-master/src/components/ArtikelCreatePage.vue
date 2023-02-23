@@ -27,7 +27,7 @@
 <script>
 import SideBarMenu from './SideBarMenu.vue';
 import axios from 'axios'
-import {URL} from '../const-url.js'
+import { URL } from '../const-url.js'
 
 export default {
 name: 'ArtikelCreatePage',

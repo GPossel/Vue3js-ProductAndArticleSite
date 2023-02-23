@@ -43,7 +43,6 @@ export default {
                         this.errormessage = error;
                         console.log(error);
                     }
-                
             )
             .catch((error) => {
                 this.errormessage = "Wrong credentials";
