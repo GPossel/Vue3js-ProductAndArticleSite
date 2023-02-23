@@ -23,9 +23,9 @@
                             </ul>
                             </div>
                             <div class="position-relative">
-                                    <button class="btn type-primary delete-button fs-4" type="submit" @click="addProduct">
-                                    Add Product
-                                    </button>
+                                <button class="btn type-primary delete-button fs-4" type="submit" @click="addProduct">
+                                Add Product
+                                </button>
                             </div>
                         </form>
 
@@ -48,7 +48,7 @@
                             </PictureInput>
                             <div class="d-grid p-2 m-2 justify-content-center">
                                <button class="btn btn-warning uploading-image" @click="attemptUpload">
-                                   Upload <!-- morgen weer proberen: ref: https://stackoverflow.com/questions/66271501/how-do-i-bind-a-css-class-to-a-button-in-vue-using-or -->
+                                   Upload
                                </button>
                             </div>
                         </div>

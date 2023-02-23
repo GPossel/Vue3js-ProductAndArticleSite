@@ -1,39 +1,71 @@
 <template>
     <div class="container-fluid">
       <div class="row flex-nowrap">
-        <SideBarMenu></SideBarMenu>
+        <SideMenuBar></SideMenuBar>
         <div class="col py-3 bg-white p-5">
           <section id="page-content" class="p-1 m-2">
             <h1>Product:</h1>
             <div class="container" style="max-width: 100%;">
-                <div class="row row-cols-1 row-cols-lg-2 g-1 g-lg-1">
+                <div class="row row-cols-1 row-cols-lg-1">
                     <div class="align-middle">
                         <div class="col col-md-auto">
                             <div class="p-3 m-1 border border-primary">
 
-                                <div v-if='this.updateMode == false' class="productForm">
+                                <!--- VIEW MODE -->
+                                <div v-if='this.updateMode == true' class="productForm">
                                     <div class="card">
-                                        <img v-bind:src="data.image" class="card-img-top" v-bind:alt="data.description">
+                                        <img v-bind:src="data.image" class="card-img-top maxSize" v-bind:alt="data.description">
                                         <div class="card-body">
                                             <h2 class="card-title text-black">{{ this.data.name }}</h2>
                                             <p class="card-text text-black">{{ this.data.description }}</p>
                                             <div class="d-grid gap-2 d-md-block fs-3">€{{ this.data.price }}</div>
                                         </div>
                                     </div>
+                                    <div class="form-inline p-2 m-2 justify-content-center">
                                     <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">Update</button>
                                 </div>
+                                </div>
 
-                                <form v-if='this.updateMode == true' class="productForm">
-                                    <div class="card">
-                                        <img v-bind:src="data.image" class="card-img-top" v-bind:alt="data.description">
-                                        <div class="card-body">
-                                            <input class="card-title text-black" v-bind:placeholder="this.data.name" v-model="title" type="text">
-                                            <textarea class="card-text text-black textAreaStretch" v-bind:placeholder="this.data.description" v-model="description" type="text"></textarea>
+                                <!--- UPDATE MODE -->
+                                <form v-if='this.updateMode == false' class="productForm">
+                                        <div class="form-inline p-5 m-5 justify-content-center">
+                                            <div class="block">
+                                            <img v-bind:src="data.image" class="p-1 m-1 maxSize" v-bind:alt="data.description">
+                                            </div>
+                                            <div class="block p-1 m-1 maxSize">
+                                                    <!-- success upload -->
+                                                    <div class="text-success text-center" v-if='this.data.uploadedMessage != ""'>{{ this.data.uploadedMessage }}</div>
+                                                    <!-- end succes message -->
+                                                <!--- IMAGE container -->
+                                                <PictureInput 
+                                                ref="pictureInput"
+                                                width="440"
+                                                height="440"
+                                                margin="16"
+                                                accept="image/jpeg,image/png"
+                                                size="10"
+                                                button-class="btn"
+                                                :custom-strings="{
+                                                    upload: '<h1>Bummer!</h1>',
+                                                    drag: 'Drag a 🖼, GIF or GTFO'
+                                                }"
+                                                @change="onChanged">
+                                                </PictureInput>
+                                                <div class="d-grid justify-content-center pb-5 mb-5">
+                                                    <button class="btn btn-warning uploading-image overrideWidth" @click="attemptUpload">Upload</button>
+                                                </div>
+                                                <!--- END IMAGE container -->
+                                            </div>
+                                        </div>
+                                        <div class="d-grid customWidthTo80">
+                                            <input class="d-grid gap-2 d-md-block fs-3 text-black mt-5" v-bind:placeholder="this.data.name" v-model="name" type="text">
+                                            <textarea class="textarea d-grid gap-2 d-md-block fs-3text-black textAreaStretch" v-bind:placeholder="this.data.description" v-model="description" type="text"></textarea>
                                             <input class="d-grid gap-2 d-md-block fs-3" v-bind:placeholder=" + this.data.price" v-model="price" type="text">
                                         </div>
+                                    <div class="form-inline p-2 m-2 justify-content-center">
+                                        <button class="btn type-primary btn-success btn-block p-1 m-1" type="submit" @click="updateProduct()">Save</button>
+                                        <button class="btn type-primary btn-danger btn-block p-1 m-1" type="submit" @click="deleteProduct()">Delete</button>
                                     </div>
-                                    <button class="btn type-primary" type="submit" @click="updateArticle()">Save</button>
-                                    <button class="btn type-primary btn-danger" type="submit" @click="deleteArticle()">Delete</button>
                                 </form>
 
                             </div>
@@ -48,14 +80,16 @@
 </template>
   
 <script>
-  import SideBarMenu from './SideBarMenu.vue';
-  import {URL} from '../const-url.js'
-  import axios from 'axios'
+import { URL } from '../const-url.js'
+import axios from 'axios'
+import SideMenuBar from './SideBarMenu.vue'
+import PictureInput from './PictureInput.vue'
   
   export default {
     name: 'ProductViewSingle',
     components: {
-      SideBarMenu
+        SideMenuBar,
+      PictureInput
     },
     data()
     {
@@ -68,7 +102,13 @@
             name: "title",
             price: "2.50"
             },
-            updateMode: false 
+            categories: [
+                    { id: 1, name: "food" }
+            ],
+            categorySelected: { id: null, name: "Category" },
+            updateMode: false,
+            errormessage: "error",
+            uploadedMessage: ""
         }
       },
       mounted() {
@@ -122,9 +162,9 @@
             {
               this.changeUpdateMode();
             }
-          },
-          deleteProduct()
-          {
+        },
+        deleteProduct()
+        {
             const token = localStorage.getItem('JWT');
             const paramsId = this.$route.params.id;
             axios.delete(URL + 'product/delete/' + paramsId, { 
@@ -133,21 +173,57 @@
                 }             
             })
             .then((response) => {
-              console.log(response);
-              this.$router.push("/ProductList");
+                console.log(response);
+                this.$router.push("/ProductList");
             })
             .catch((error) => {
-              console.log(error);
-              this.errormessage = error.response.data;
+                console.log(error);
+                this.errormessage = error.response.data;
             })
-          },
-          changeUpdateMode(){
+        },
+        changeUpdateMode() {
             if(this.updateMode == true) { 
-              this.updateMode = false}
+                this.updateMode = false}
             else {
               this.updateMode = true;
             }
-          }
+        },
+        attemptUpload() {
+            if (this.data.image) {
+                const token = localStorage.getItem('JWT');
+                const formData = new FormData();
+                formData.append("upload-picture", this.data.image);
+                axios.post(URL + 'products/picture', formData, 
+                {
+                    headers:
+                    {
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': token
+                    }
+                })
+                .then((response) => {
+                if(response.status == 200) {
+                    console.log("Image uploaded successfully ✨");
+                    this.data.image = response.data;
+                    this.data.uploadedMessage = "Image uploaded successfully";
+                }
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+            }
+            },
+            onChanged() {
+            console.log("New picture loaded");
+            if (this.$refs.pictureInput.file) {
+               this.data.image = this.$refs.pictureInput.file;
+            } else {
+               console.log("Old browser. No support for Filereader API");
+            }
+        },
+        onRemoved() {
+            this.data.image = '';
+        }
     }
   }
 </script>
@@ -164,52 +240,12 @@
   .card-body2 {
     background: rgb(239, 249, 255);
   }
-  
-  .innerTextBox2 {
-      text-align: left;
-      padding: 5px 5px 1px 25px;
-      margin: 10px 2px 10px 2px;
-      font-style: italic;
-      font-size: 37px;
-      font-weight: bold;
+
+  .maxSize {
+    width: 400px;
+    height: 400px;
   }
-  
-  .writerBox2 {
-      font-size: 25px;
-      display: inline-block;
-      padding: 10px;
-      margin:10px;
-      display: block;
-      text-align: right;
-  }
-  
-  .titleBox2 {
-      padding: 5px 5px 1px 25px;
-      margin: 10px 2px 10px 2px;
-      float: left;
-      font-size: 60px;
-      width: auto;
-  }
-  
-  .fullText2 {
-      display: inline-block;
-      padding: 5px 5px 15px 25px;
-      margin: 30px 2px 30px 2px;
-      display: block;
-      text-align: left;
-      font-size: 28px;
-  }
-  
-  .card2 button
-  {
-    display: block;
-    height: 50px;
-    width: 120px;
-    padding: -50px 5px 20px 5px;
-    margin: -50px 10px 10px 10px;
-    float: right;
-  }
-  
+
   .delete-button {
     padding: 5px 5px 20px 5px;
     margin-bottom: 15px;
@@ -226,17 +262,31 @@
   
   .productForm button {
     padding: auto;
-    margin-right: 20px;
     margin-top: 15px;
-    width: 50%;    
+    width: 40%;    
     color: #fff;
     background-color: #007bff;
     border-color: #007bff;
+  }
+
+  .productForm button.overrideWidth {
+    width: 100%;
   }
 
   .textAreaStretch {
     position: auto;
     width: 100%;
     height: 200px;
+  }
+
+  .overlayButton {
+    position: absolute;
+    z-index: 1;
+    top: 100px;
+  }
+
+  .customWidthTo80 {
+    width: 70%;
+    margin: auto;
   }
   </style>
