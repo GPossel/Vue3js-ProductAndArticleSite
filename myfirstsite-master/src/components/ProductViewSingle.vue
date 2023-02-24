@@ -62,19 +62,18 @@
                                             <textarea class="textarea d-grid gap-2 d-md-block fs-3text-black textAreaStretch" v-bind:placeholder="this.data.description" v-model="description" type="text"></textarea>
                                             <input class="d-grid gap-2 d-md-block fs-3" v-bind:placeholder=" + this.data.price" v-model="price" type="text">
                                         </div>
-                                    <div class="form-inline p-2 m-2 justify-content-center">
+                                  <div class="form-inline p-2 m-2 justify-content-center">
                                         <button class="btn type-primary btn-success btn-block p-1 m-1" type="submit" @click="updateProduct()">Save</button>
                                         <button class="btn type-primary btn-danger btn-block p-1 m-1" type="submit" @click="deleteProduct()">Delete</button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                  </div>
+                            </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
             </div>
             </section>
-            </div>
+          </div>
         </div>
     </div>
 </template>
@@ -131,7 +130,7 @@ import PictureInput from './PictureInput.vue'
               console.log(error);
             })
           },
-          updateProduct()
+        updateProduct()
           {
             if(this.updateMode == true)
             {
@@ -167,14 +166,14 @@ import PictureInput from './PictureInput.vue'
         {
             const token = localStorage.getItem('JWT');
             const paramsId = this.$route.params.id;
-            axios.delete(URL + 'product/delete/' + paramsId, { 
+            axios.delete(URL + 'products/delete/' + paramsId, { 
                 headers: { 
                     'Authorization' : token
                 }             
             })
             .then((response) => {
                 console.log(response);
-                this.$router.push("/ProductList");
+                this.$router.push("/products");
             })
             .catch((error) => {
                 console.log(error);
@@ -213,7 +212,7 @@ import PictureInput from './PictureInput.vue'
                 });
             }
             },
-            onChanged() {
+        onChanged() {
             console.log("New picture loaded");
             if (this.$refs.pictureInput.file) {
                this.data.image = this.$refs.pictureInput.file;
@@ -223,6 +222,19 @@ import PictureInput from './PictureInput.vue'
         },
         onRemoved() {
             this.data.image = '';
+        },
+        loadPicture()
+        {
+          var json = {
+            "picturePath": this.data.image
+          }
+          axios.get(URL + '/products/picture/get', json)
+          .then((response) => {
+            this.data.image = response.data;
+            console.log(response.data);
+          }).catch((error) => {
+            console.log(error);
+          })
         }
     }
   }

@@ -23,7 +23,7 @@
                             </ul>
                             </div>
                             <div class="position-relative">
-                                <button class="btn type-primary delete-button fs-4" type="submit" @click="addProduct">
+                                <button class="btn type-primary delete-button fs-4" type="submit" @click="addProduct()">
                                 Add Product
                                 </button>
                             </div>
@@ -154,15 +154,6 @@ export default {
                 });
             }
         },
-        // uploadImage(e) {
-        //         const image = e.target.files[0];
-        //         const reader = new FileReader();
-        //         reader.readAsDataURL(image);
-        //         reader.onload = e => {
-        //             this.image = e.target.result;
-        //             console.log(this.image);
-        //         }
-        // },
         removeImage()
         {
             this.data.image = '';
@@ -187,8 +178,10 @@ export default {
                 }
             })
             .then((response) => {
-                
-                console.log(response.data);
+                if(response.status == 200) {
+                console.log(response.status);
+                this.$router.push("/products");
+                }
             })
             .catch((error) => {
                 console.log(error);

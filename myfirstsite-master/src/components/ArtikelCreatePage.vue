@@ -69,6 +69,7 @@ methods:
         })
         .then((repsonse) => {
           console.log(repsonse);
+          this.$router.push("/articles");
         })
         .catch((error) => {
           console.log(error);
