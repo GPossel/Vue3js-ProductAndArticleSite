@@ -30,7 +30,7 @@
                                 <form v-if='this.updateMode == true' class="productForm">
                                         <div class="form-inline p-5 m-5 justify-content-center">
                                             <div class="block">
-                                            <img v-bind:src="data.imageBlob" class="p-1 m-1 maxSize" v-bind:alt="data.description">
+                                            <img v-bind:src="this.data.imageBlob" class="p-1 m-1 maxSize" v-bind:alt="data.description">
                                             </div>
                                             <div class="block p-1 m-1 maxSize">
                                                     <!-- success upload -->
@@ -177,7 +177,7 @@ import PictureInput from './PictureInput.vue'
               const token = localStorage.getItem('JWT');
               axios.put(URL + 'products/update/' +  paramsId, json, { 
                 headers: { 
-                      'Authorization' : token
+                    'Authorization' : token
                 } 
               })
               .then((response) => {
@@ -200,7 +200,7 @@ import PictureInput from './PictureInput.vue'
             const paramsId = this.$route.params.id;
             axios.delete(URL + 'products/delete/' + paramsId, { 
                 headers: { 
-                    'Authorization' : token
+                  'Authorization' : token
                 }             
             })
             .then((response) => {
@@ -215,12 +215,12 @@ import PictureInput from './PictureInput.vue'
         changeUpdateMode() {
               this.setCategory(this.data.category_id);
               // this happens on the first call,
-              if(this.data.imageBlob === "")
-              {
+            if(this.data.imageBlob === "") {
                 this.data.imageBlob = this.data.image;
-              }
+            }
             if(this.updateMode == true) { 
-                this.updateMode = false}
+              this.updateMode = false;
+            }
             else {
               this.updateMode = true;
             }
@@ -230,23 +230,24 @@ import PictureInput from './PictureInput.vue'
                 const token = localStorage.getItem('JWT');
                 const formData = new FormData();
                 formData.append("upload-picture", this.data.imageBlob);
+                
                 axios.post(URL + 'products/picture', formData, 
                 {
                     headers:
                     {
-                        'Content-Type': "multipart/form-data",
-                        'Authorization': token
+                      'Content-Type': "multipart/form-data",
+                      'Authorization': token
                     }
                 })
                 .then((response) => {
-                if(response.status == 200) {
+                  if(response.status == 200) {
                     console.log("Image uploaded successfully ✨");
                     this.data.image = response.data;
                     this.data.uploadedMessage = "Image uploaded successfully";
                 }
                 })
-                .catch((err) => {
-                    console.error(err);
+                .catch((error) => {
+                  console.log(error);
                 });
             }
         },
@@ -259,9 +260,8 @@ import PictureInput from './PictureInput.vue'
 
               // set new img:src
               this.data.imageBlob = preview;
-              // this.loadPicture();
             } else {
-               console.log("Old browser. No support for Filereader API");
+              console.log("Old browser. No support for Filereader API");
             }
         },
         onRemoved() {
@@ -272,7 +272,7 @@ import PictureInput from './PictureInput.vue'
         {
             var selected = this.data.categories.find(function(element)
             { 
-                return element.id == catId; 
+              return element.id == catId; 
             })
             this.categorySelected.name = selected.name;
             this.categorySelected.id = selected.id;
@@ -287,6 +287,11 @@ import PictureInput from './PictureInput.vue'
           {
             console.log("Loaded img from https source succes!");
             this.data.srcImgData = this.data.image;
+            // we only do this on the load of the page, the blob is supposed to be able to change its conteent
+            if(this.imageBlob === "")
+            {
+              this.data.imageBlob = this.data.srcImgData;
+            }
           } 
           else 
           {
@@ -301,17 +306,16 @@ import PictureInput from './PictureInput.vue'
             axios.post(URL + '/products/picture/get', json,
             {
               headers: {
-                  'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
               }
             })
             .then((response) => 
              {
               console.log(response.data);
-              this.data.imageBlob = response.data;
               this.data.srcImgData = response.data;
             })
             .catch((error) => {
-                console.log(error);
+              console.log(error);
             })
           }
         }
