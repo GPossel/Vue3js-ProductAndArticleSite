@@ -11,7 +11,7 @@
                         <div class="col col-md-auto">
                             <div class="p-3 m-1 border border-primary">
                                 <div class="card"> 
-                                <img v-bind:src="product.image" class="card-img-top" v-bind:alt="product.description">
+                                <img v-bind:src="matchIndex(product.id)" class="card-img-top" v-bind:alt="product.description">
                                     <div class="card-body">
                                         <h2 class="card-title text-black">{{ product.name }}</h2>
                                         <p class="card-text text-black">{{ product.description }}</p>
@@ -60,6 +60,9 @@ export default {
                         // date: "2023-09-09 19:00",
                         // altTags: "alt"
                     }
+                ],
+                productSrcImgDump: [ 
+                    { product_id: 1, srcImgData: "" }
                 ]
             }
         }
@@ -74,6 +77,9 @@ export default {
             .then((response) => {
                 console.log(response.data);
                 this.data.products = response.data;
+                this.data.products.forEach(element => {
+                    this.loadPicture(element);
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -82,6 +88,66 @@ export default {
         goToAdjust(id)
         {
             this.$router.push("/products/" + id);
+        },
+        loadPicture(product)
+        {
+          // create new variable to store this image src data (dump)
+          let imgSRC = {
+            product_id: -1,
+            srcImgData: ""
+          };
+
+          imgSRC.product_id = product.id;
+
+          const string = '^http';
+          const regexp = new RegExp(string);
+
+          if(regexp.test(product.image))
+          {
+                imgSRC.srcImgData = product.image;
+                console.log("Loaded srcImgData from https source succes!");
+                            // add to list
+                this.data.productSrcImgDump.push(imgSRC);
+                return;
+          } 
+          else 
+          {
+              var imageName = product.image.split('.', 1); // split out the imageName for routing of PHP
+              console.log(imageName);
+              var fileExt = product.image.split('.').pop(); // returns the extention like 'jpg'
+              console.log(fileExt);  
+              var json = JSON.stringify({
+                'pictureName': product.image
+              });
+              console.log(json);  
+              axios.post(URL + '/products/picture/get', json,
+              {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+              }).then((response) => 
+              {
+                imgSRC.srcImgData = response.data;
+                // add to list
+                this.data.productSrcImgDump.push(imgSRC);
+                return;
+                }).catch((error) => {
+                  console.log(error);
+                })
+            }
+        },
+        matchIndex(expectedValue)
+        {
+            let foundSRC;
+            const valuePresent = this.data.productSrcImgDump.find((data) => {
+                foundSRC = data.srcImgData;
+                return data.product_id === expectedValue;
+            });
+
+            if(valuePresent !== null)
+            {
+                return foundSRC;
+            }
         }
     }
 }

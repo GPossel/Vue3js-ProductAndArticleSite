@@ -3,7 +3,6 @@
     <nav class="navbar navbar-light bg-primary">
           <div class="container-fluid container-custom-resize">
             <a class="navbar-brand text-white a-inline-flex" href="#">ArtikelWeb</a>
-            <MySearchBar></MySearchBar>
             <MyLoginBar></MyLoginBar>
       </div>
     </nav>
@@ -15,13 +14,11 @@
 
 <script>
 import MyLoginBar from './components/LoginMenu.vue'
-import MySearchBar from './components/SearchBar.vue'
 
 export default {
   name: 'App',
   components: {
     MyLoginBar,
-    MySearchBar
     },
     data() {
       return {

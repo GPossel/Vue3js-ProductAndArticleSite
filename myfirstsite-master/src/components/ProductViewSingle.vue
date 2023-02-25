@@ -12,9 +12,9 @@
                             <div class="p-3 m-1 border border-primary">
 
                                 <!--- VIEW MODE -->
-                                <div v-if='this.updateMode == true' class="productForm">
+                                <div v-if='this.updateMode == false' class="productForm">
                                     <div class="card">
-                                        <img v-bind:src="data.image" class="card-img-top maxSize" v-bind:alt="data.description">
+                                        <img v-bind:src="this.data.srcImgData" class="maxSize" v-bind:alt="data.description">
                                         <div class="card-body">
                                             <h2 class="card-title text-black">{{ this.data.name }}</h2>
                                             <p class="card-text text-black">{{ this.data.description }}</p>
@@ -27,10 +27,10 @@
                                 </div>
 
                                 <!--- UPDATE MODE -->
-                                <form v-if='this.updateMode == false' class="productForm">
+                                <form v-if='this.updateMode == true' class="productForm">
                                         <div class="form-inline p-5 m-5 justify-content-center">
                                             <div class="block">
-                                            <img v-bind:src="data.image" class="p-1 m-1 maxSize" v-bind:alt="data.description">
+                                            <img v-bind:src="this.data.srcImgData" class="p-1 m-1 maxSize" v-bind:alt="data.description">
                                             </div>
                                             <div class="block p-1 m-1 maxSize">
                                                     <!-- success upload -->
@@ -62,6 +62,20 @@
                                             <textarea class="textarea d-grid gap-2 d-md-block fs-3text-black textAreaStretch" v-bind:placeholder="this.data.description" v-model="description" type="text"></textarea>
                                             <input class="d-grid gap-2 d-md-block fs-3" v-bind:placeholder=" + this.data.price" v-model="price" type="text">
                                         </div>
+
+                                        <!--- CATEGORIE -->
+                                        <div class="dropdown">
+                                        <button class="btn btn-secondary btn-lg dropdown-toggle btn-lg fs-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <!-- {{ this.data.categorySelected?.name }} -->
+                                        </button>
+                                        <ul class="dropdown-menu" style="width: 90%">
+                                            <div v-for='category in this.data?.categories' v-bind:key="category.id">
+                                                <li class="dropdown-item btn btn-lg fs-4" @click="setCategory(category.id)">{{ category.name }}</li>
+                                            </div>
+                                        </ul>
+                                        </div>
+                                        <!--- END CATEGORIE -->
+
                                   <div class="form-inline p-2 m-2 justify-content-center">
                                         <button class="btn type-primary btn-success btn-block p-1 m-1" type="submit" @click="updateProduct()">Save</button>
                                         <button class="btn type-primary btn-danger btn-block p-1 m-1" type="submit" @click="deleteProduct()">Delete</button>
@@ -88,7 +102,7 @@ import PictureInput from './PictureInput.vue'
     name: 'ProductViewSingle',
     components: {
         SideMenuBar,
-      PictureInput
+        PictureInput
     },
     data()
     {
@@ -97,21 +111,24 @@ import PictureInput from './PictureInput.vue'
             category_id: 1,
             description: "description",
             id: 1,
-            image: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/957759184-1529703875.jpg?crop=1.00xw:0.645xh;0,0.104xh&resize=980:*" ,                       
+            image: "http" ,                       
             name: "title",
             price: "2.50"
             },
             categories: [
                     { id: 1, name: "food" }
             ],
-            categorySelected: { id: null, name: "Category" },
             updateMode: false,
             errormessage: "error",
-            uploadedMessage: ""
+            uploadedMessage: "",
+            srcImgData: "",
+            // categorySelected: { id: 1, name: "Category" }
         }
       },
-      mounted() {
-           this.getProduct();
+      mounted() 
+      {
+        this.loadCategories();
+        this.getProduct();
       },
       methods: {
         getProduct() {
@@ -125,15 +142,39 @@ import PictureInput from './PictureInput.vue'
               this.data.image = response.data.image;
               this.data.name = response.data.name;
               this.data.price = response.data.price;
+              this.loadPicture();
             })
             .catch((error) => {
               console.log(error);
             })
-          },
+        },
+        loadCategories() {
+          console.log("Loading categories from db...");
+          axios.get(URL + 'category/all')
+          .then((response) => {
+            console.log("Categories collected!");
+            console.log(response.data);
+            this.data.categories = response.data;
+          }).catch(err => {
+            console.error(err);
+            console.log("Loading category failed!");
+          })
+        },
+        setCategory(catId)
+        {
+            var selected = this.data.categories.find(function(element)
+            { 
+              return element.id == catId; 
+            })
+            // this.data.categorySelected.name = selected.name;
+            // this.data.categorySelected.id = selected.id;
+            console.log(selected);
+            console.log("Changed category into:" . catId);
+        },
         updateProduct()
+        {
+          if(this.updateMode == true)
           {
-            if(this.updateMode == true)
-            {
               const paramsId = this.$route.params.id;
               var json = JSON.stringify({
                 'category_id': this.category_id,
@@ -142,22 +183,23 @@ import PictureInput from './PictureInput.vue'
                 'name': this.name,
                 'price': this.price
               });
-  
+              
               const token = localStorage.getItem('JWT');
               axios.put(URL + 'products/update/' +  paramsId, json, { 
                 headers: { 
-                    'Authorization' : token
+                      'Authorization' : token
                 } 
               })
-              .then((repsonse) => {
-                  console.log(repsonse);
+              .then((response) => {
+                  console.log(response);
                   this.errormessage = "Updated!";
                   this.changeUpdateMode();
               })
               .catch((error) => {
                   this.errormessage = error.response.data;
               })
-            } else
+            }
+            else
             {
               this.changeUpdateMode();
             }
@@ -181,6 +223,7 @@ import PictureInput from './PictureInput.vue'
             })
         },
         changeUpdateMode() {
+              this.setCategory(this.data.category_id);
             if(this.updateMode == true) { 
                 this.updateMode = false}
             else {
@@ -215,7 +258,12 @@ import PictureInput from './PictureInput.vue'
         onChanged() {
             console.log("New picture loaded");
             if (this.$refs.pictureInput.file) {
-               this.data.image = this.$refs.pictureInput.file;
+              // create url -> ties the blob into a download link
+              var preview = global.URL.createObjectURL(this.$refs.pictureInput.file);
+              console.log(preview);
+              
+              // set new img:src
+              this.data.image = preview;
             } else {
                console.log("Old browser. No support for Filereader API");
             }
@@ -225,22 +273,46 @@ import PictureInput from './PictureInput.vue'
         },
         loadPicture()
         {
-          var json = {
-            "picturePath": this.data.image
-          }
-          axios.get(URL + '/products/picture/get', json)
-          .then((response) => {
-            this.data.image = response.data;
-            console.log(response.data);
-          }).catch((error) => {
-            console.log(error);
-          })
+          const string = '^http';
+          const regexp = new RegExp(string);
+
+          if(regexp.test(this.data.image))
+            {
+              this.data.srcImgData = this.data.image;
+              console.log("Loaded img from https source succes!");
+            } 
+          else 
+            {
+              var imageName = this.data.image.split('.', 1); // split out the imageName for routing of PHP
+              console.log(imageName);
+              var fileExt = this.data.image.split('.').pop(); // returns the extention like 'jpg'
+              console.log(fileExt);
+
+              var json = JSON.stringify({
+                'pictureName': this.data.image
+              });
+              console.log(json);
+
+              axios.post(URL + '/products/picture/get', json,
+              {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+              })
+              .then((response) => 
+               {
+                console.log(response.data);
+                this.data.srcImgData = response.data;
+              }).catch((error) => {
+                  console.log(error);
+              })
+            }
         }
     }
   }
 </script>
   
-  <style>
+<style>
   .card2 {
       padding: 50px 5% 50px 5%;
       margin-left: 5%;
@@ -301,4 +373,4 @@ import PictureInput from './PictureInput.vue'
     width: 70%;
     margin: auto;
   }
-  </style>
+</style>
