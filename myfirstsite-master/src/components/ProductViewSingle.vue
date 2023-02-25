@@ -12,9 +12,9 @@
                             <div class="p-3 m-1 border border-primary">
 
                                 <!--- VIEW MODE -->
-                                <div v-if='this.updateMode == true' class="productForm">
+                                <div v-if='this.updateMode == false' class="productForm">
                                     <div class="card">
-                                        <img v-bind:src="this.data.srcImgData" class="maxSize" v-bind:alt="this.data.description">
+                                        <img v-bind:src="this.data.imageBlob" class="maxSize" v-bind:alt="this.data.description">
                                         <div class="card-body">
                                             <h2 class="card-title text-black">{{ this.data.name }}</h2>
                                             <p class="card-text text-black">{{ this.data.description }}</p>
@@ -29,7 +29,7 @@
                                 </div>
 
                                 <!--- UPDATE MODE -->
-                                <form v-if='this.updateMode == false' class="productForm">
+                                <div v-if='this.updateMode == true' class="productForm">
                                         <div class="form-inline p-5 m-5 justify-content-center">
                                             <div class="block">
                                             <img v-bind:src="this.data.imageBlob" class="p-1 m-1 maxSize" v-bind:alt="this.data.description">
@@ -54,7 +54,7 @@
                                                 @change="onChanged">
                                                 </PictureInput>
                                                 <div class="d-grid justify-content-center pb-5 mb-5">
-                                                  <button class="btn btn-warning uploading-image" @click="attemptUpload">
+                                                  <button class="btn btn-warning uploading-image overrideWidth" @click="attemptUpload">
                                                       Upload
                                                     </button>
                                                 </div>
@@ -84,7 +84,7 @@
                                         <button class="btn type-primary btn-success btn-block p-1 m-1" type="submit" @click="updateProduct()">Save</button>
                                         <button class="btn type-primary btn-danger btn-block p-1 m-1" type="submit" @click="deleteProduct()">Delete</button>
                                   </div>
-                            </form>
+                                </div>
                           </div>
                       </div>
                   </div>
@@ -220,7 +220,7 @@ import PictureInput from './PictureInput.vue'
               this.setCategory(this.data.category_id);
               // this happens on the first call,
             if(this.data.imageBlob === "") {
-                this.data.imageBlob = this.data.image;
+              this.data.imageBlob = this.data.image;
             }
             if(this.updateMode == true) { 
               this.updateMode = false;
@@ -230,10 +230,10 @@ import PictureInput from './PictureInput.vue'
             }
         },
         attemptUpload() {
-            if (this.data.image){
+            if (this.data.srcImgData){
                 const token = localStorage.getItem('JWT');
                 const formData = new FormData();
-                formData.append("upload-picture", this.data.image);
+                formData.append("upload-picture", this.data.srcImgData);
                 axios.post(URL + 'products/picture', formData, 
                 {
                     headers:
@@ -243,10 +243,10 @@ import PictureInput from './PictureInput.vue'
                     }
                 })
                 .then((response) => {
-                  if(response.status === 200) {
+                  if(response.status == 200) {
                     console.log("Image uploaded successfully ✨");
-                    this.data.image = response.data;
-                    this.data.imageBlob = response.data;
+                    // this.data.image = response.data;
+                    // this.data.imageBlob = response.data;
                     this.data.uploadedMessage = "Image uploaded successfully";
                 }
                 })
@@ -258,6 +258,9 @@ import PictureInput from './PictureInput.vue'
         onChanged() {
             console.log("New picture loaded");
             if (this.$refs.pictureInput.file) {
+              this.data.srcImgData = this.$refs.pictureInput.file; // send file
+
+              this.data.image = this.$refs.pictureInput.file.name; // store the name
               // create url -> ties the blob into a download link
               var preview = global.URL.createObjectURL(this.$refs.pictureInput.file);
               console.log(preview);
