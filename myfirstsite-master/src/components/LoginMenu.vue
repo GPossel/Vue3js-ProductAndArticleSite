@@ -32,7 +32,7 @@ export default {
             })
             .then(
                     (result) => { 
-                        this.$router.go("/ArtikelList");
+                        this.$router.go("/articles");
                         console.log(result);
                     },
                     (error) => { 

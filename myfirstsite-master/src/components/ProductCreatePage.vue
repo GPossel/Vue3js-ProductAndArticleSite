@@ -7,11 +7,10 @@
                     <h1>Create a Product</h1> <p class="error text-danger" v-if='this.data.errormessage == ""'>{{ this.data.errormessage }}</p>
                     <div class="border border-primary">
                         <div class="row row-cols-2 row-cols-lg-2">
-                        <form class="form articleForm productCreatingForm col col-md-auto" method="post" enctype="multipart/form-data">
+                        <form class="form articleForm productCreatingForm col col-md-auto">
                             <input class="border border-secondary form-control me-sm-2 fs-5 text-secondary" placeholder="Name" v-model="name" type="text">
                             <input class="border border-secondary form-control me-sm-2 fs-5 text-secondary" placeholder="Price" v-model="price" type="text">
                             <input class="border border-secondary form-control me-sm-2 fs-5 text-secondary" placeholder="Description" v-model="description" type="text">
-
                             <div class="dropdown">
                             <button class="btn btn-secondary btn-lg dropdown-toggle btn-lg fs-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ this.data.categorySelected.name }}
@@ -128,6 +127,7 @@ export default {
             this.data.categorySelected.name = selected.name;
             this.data.categorySelected.id = selected.id;
             console.log("Changed category into:" + catId);
+            return;
         },
         attemptUpload() {
             if (this.data.image){
@@ -181,7 +181,7 @@ export default {
             .then((response) => {
                 if(response.status == 200) {
                 console.log(response.status);
-                this.$router.go(1); // hisory stack go 1 back,
+                this.$router.push("/products"); // hisory stack go 1 back,
                 }
             })
             .catch((error) => {
