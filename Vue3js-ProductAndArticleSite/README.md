@@ -35,4 +35,6 @@ The drag and drop functionality could not exist without the writer: https://www.
 https://www.npmjs.com/package/vue-picture-input?activeTab=readme all I had to do was to update the breaking changes for Vue 3 js.
 Big thank you to https://www.npmjs.com/~maffeis for creating the template.
 
+
+
 This project was made by Gentle (639567) and is only for educational purposes. 2023

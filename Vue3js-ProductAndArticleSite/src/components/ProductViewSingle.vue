@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <div class="row flex-nowrap">
         <SideMenuBar></SideMenuBar>
-        <div class="col py-3 bg-white p-5">
+        <div class="col py-1 bg-white p-2">
           <section id="page-content" class="p-1 m-2">
             <h1>Product:</h1>
             <div class="container" style="max-width: 100%;">
@@ -33,9 +33,9 @@
 
                                 <!--- UPDATE MODE -->
                                 <div v-if='this.updateMode == true' class="productForm">
-                                        <div class="form-inline p-5 m-5 justify-content-center">
+                                        <div class="form-inline p-2 m-2 justify-content-center">
                                             <div class="block">
-                                            <img v-bind:src="this.data.imageBlob" class="p-1 m-1 maxSize" v-bind:alt="this.data.description">
+                                            <img v-bind:src="this.data.imageBlob" class="maxSize" v-bind:alt="this.data.description">
                                             </div>
                                             <div class="block p-1 m-1 maxSize">
                                                     <!-- success upload -->
@@ -65,13 +65,13 @@
                                             </div>
                                         </div>
                                         <div class="d-grid customWidthTo80">
-                                            <input class="d-grid gap-2 d-md-block fs-3 text-black mt-5" v-bind:placeholder="this.data.name" v-model="name" type="text">
-                                            <textarea class="textarea d-grid gap-2 d-md-block fs-3text-black textAreaStretch" v-bind:placeholder="this.data.description" v-model="description" type="text"></textarea>
-                                            <input class="d-grid gap-2 d-md-block fs-3" v-bind:placeholder=" + this.data.price" v-model="price" type="text">
+                                            <input class="card d-grid gap-2 d-md-block fs-3 text-black p-1 mt-5" v-bind:placeholder="this.data.name" v-model="name" type="text">
+                                            <textarea class="card textarea d-grid gap-2 d-md-block fs-3text-black p-1 m-1 textAreaStretch" v-bind:placeholder="this.data.description" v-model="description" type="text"></textarea>
+                                            <input class="card d-grid gap-2 d-md-block p-1 m-1 fs-3" v-bind:placeholder=" + this.data.price" v-model="price" type="text">
                                         </div>
 
                                         <!--- CATEGORIE -->
-                                        <div class="form-inline p-5 m-5 dropdown justify-content-center">
+                                        <div class="form-inline pb-5 m-1 dropdown justify-content-center">
                                         <button class="btn btn-secondary btn-lg dropdown-toggle btn-lg fs-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                           {{ this.categorySelected.name }}
                                         </button>
