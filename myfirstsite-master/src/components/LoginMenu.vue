@@ -8,10 +8,6 @@
 					<input class="form-control me-sm-2" placeholder="Password" v-model="password" type="password">
 					<button class="btn type-primary" type="submit" @click="login()">Login</button>
 				</form>
-                <ul>
-                    <li><a href="">Forgot Password?</a> </li>
-                    <li><a href="">Not yet an account?</a> </li>
-                </ul>
             </ul>
 			<ul v-if="this.$store.getters.isAuthenticated" class="nav navbar">
                 <button class="btn type-primary" type="submit"  @click="logout()">Log out</button>
