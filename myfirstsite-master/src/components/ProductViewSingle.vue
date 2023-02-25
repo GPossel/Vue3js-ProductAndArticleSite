@@ -23,14 +23,14 @@
                                     </div>
                                     <div class="form-inline p-2 m-2 justify-content-center">
                                     <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">Update</button>
-                                </div>
+                                  </div>
                                 </div>
 
                                 <!--- UPDATE MODE -->
                                 <form v-if='this.updateMode == true' class="productForm">
                                         <div class="form-inline p-5 m-5 justify-content-center">
                                             <div class="block">
-                                            <img v-bind:src="this.data.srcImgData" class="p-1 m-1 maxSize" v-bind:alt="data.description">
+                                            <img v-bind:src="data.imageBlob" class="p-1 m-1 maxSize" v-bind:alt="data.description">
                                             </div>
                                             <div class="block p-1 m-1 maxSize">
                                                     <!-- success upload -->
@@ -64,12 +64,12 @@
                                         </div>
 
                                         <!--- CATEGORIE -->
-                                        <div class="dropdown">
+                                        <div class="form-inline p-5 m-5 dropdown justify-content-center">
                                         <button class="btn btn-secondary btn-lg dropdown-toggle btn-lg fs-4" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                          <!-- {{ this.data.categorySelected?.name }} -->
+                                          {{ this.categorySelected.name }}
                                         </button>
-                                        <ul class="dropdown-menu" style="width: 90%">
-                                            <div v-for='category in this.data?.categories' v-bind:key="category.id">
+                                        <ul class="dropdown-menu justify-content-center" style="width: 50%">
+                                            <div v-for='category in this.data?.categories' v-bind:key="category?.id">
                                                 <li class="dropdown-item btn btn-lg fs-4" @click="setCategory(category.id)">{{ category.name }}</li>
                                             </div>
                                         </ul>
@@ -118,11 +118,12 @@ import PictureInput from './PictureInput.vue'
             categories: [
                     { id: 1, name: "food" }
             ],
+            categorySelected: { id: null, name: "Category" },
             updateMode: false,
             errormessage: "error",
             uploadedMessage: "",
             srcImgData: "",
-            // categorySelected: { id: 1, name: "Category" }
+            imageBlob: ""
         }
       },
       mounted() 
@@ -160,28 +161,17 @@ import PictureInput from './PictureInput.vue'
             console.log("Loading category failed!");
           })
         },
-        setCategory(catId)
-        {
-            var selected = this.data.categories.find(function(element)
-            { 
-              return element.id == catId; 
-            })
-            // this.data.categorySelected.name = selected.name;
-            // this.data.categorySelected.id = selected.id;
-            console.log(selected);
-            console.log("Changed category into:" . catId);
-        },
         updateProduct()
         {
           if(this.updateMode == true)
           {
               const paramsId = this.$route.params.id;
               var json = JSON.stringify({
-                'category_id': this.category_id,
-                'description': this.description,
-                'image': this.image,
-                'name': this.name,
-                'price': this.price
+                'category_id': this.data.category_id,
+                'description': this.data.description,
+                'image': this.data.image,
+                'name': this.data.name,
+                'price': this.data.price
               });
               
               const token = localStorage.getItem('JWT');
@@ -224,6 +214,11 @@ import PictureInput from './PictureInput.vue'
         },
         changeUpdateMode() {
               this.setCategory(this.data.category_id);
+              // this happens on the first call,
+              if(this.data.imageBlob === "")
+              {
+                this.data.imageBlob = this.data.image;
+              }
             if(this.updateMode == true) { 
                 this.updateMode = false}
             else {
@@ -231,15 +226,15 @@ import PictureInput from './PictureInput.vue'
             }
         },
         attemptUpload() {
-            if (this.data.image) {
+            if (this.data.imageBlob) {
                 const token = localStorage.getItem('JWT');
                 const formData = new FormData();
-                formData.append("upload-picture", this.data.image);
+                formData.append("upload-picture", this.data.imageBlob);
                 axios.post(URL + 'products/picture', formData, 
                 {
                     headers:
                     {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': "multipart/form-data",
                         'Authorization': token
                     }
                 })
@@ -254,22 +249,34 @@ import PictureInput from './PictureInput.vue'
                     console.error(err);
                 });
             }
-            },
+        },
         onChanged() {
             console.log("New picture loaded");
             if (this.$refs.pictureInput.file) {
               // create url -> ties the blob into a download link
               var preview = global.URL.createObjectURL(this.$refs.pictureInput.file);
               console.log(preview);
-              
+
               // set new img:src
-              this.data.image = preview;
+              this.data.imageBlob = preview;
+              // this.loadPicture();
             } else {
                console.log("Old browser. No support for Filereader API");
             }
         },
         onRemoved() {
-            this.data.image = '';
+            this.data.imageBlob = '';
+            this.data.srcImgData = '';
+        },
+        setCategory(catId)
+        {
+            var selected = this.data.categories.find(function(element)
+            { 
+                return element.id == catId; 
+            })
+            this.categorySelected.name = selected.name;
+            this.categorySelected.id = selected.id;
+            console.log("Changed category into:" . catId);
         },
         loadPicture()
         {
@@ -277,36 +284,36 @@ import PictureInput from './PictureInput.vue'
           const regexp = new RegExp(string);
 
           if(regexp.test(this.data.image))
-            {
-              this.data.srcImgData = this.data.image;
-              console.log("Loaded img from https source succes!");
-            } 
+          {
+            console.log("Loaded img from https source succes!");
+            this.data.srcImgData = this.data.image;
+          } 
           else 
+          {
+            var imageName = this.data.image.split('.', 1); // split out the imageName for routing of PHP
+            console.log(imageName);
+            var fileExt = this.data.image.split('.').pop(); // returns the extention like 'jpg'
+            console.log(fileExt);
+            var json = JSON.stringify({
+              'pictureName': this.data.image
+            });
+            console.log(json);
+            axios.post(URL + '/products/picture/get', json,
             {
-              var imageName = this.data.image.split('.', 1); // split out the imageName for routing of PHP
-              console.log(imageName);
-              var fileExt = this.data.image.split('.').pop(); // returns the extention like 'jpg'
-              console.log(fileExt);
-
-              var json = JSON.stringify({
-                'pictureName': this.data.image
-              });
-              console.log(json);
-
-              axios.post(URL + '/products/picture/get', json,
-              {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-              })
-              .then((response) => 
-               {
-                console.log(response.data);
-                this.data.srcImgData = response.data;
-              }).catch((error) => {
-                  console.log(error);
-              })
-            }
+              headers: {
+                  'Content-Type': 'application/json',
+              }
+            })
+            .then((response) => 
+             {
+              console.log(response.data);
+              this.data.imageBlob = response.data;
+              this.data.srcImgData = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+          }
         }
     }
   }

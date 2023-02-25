@@ -50,8 +50,8 @@ export default {
                     { 
                         category_id: 1,
                         description: "description",
-                        id: 1,
-                        image: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/957759184-1529703875.jpg?crop=1.00xw:0.645xh;0,0.104xh&resize=980:*" ,                       
+                        id: -1,
+                        image: "https://www.bing.com/images/search?view=detailv2&form=SBIHVR&lightschemeovr=1&iss=sbi&q=imgurl:https%3A%2F%2Fhips.hearstapps.com%2Fhmg-prod.s3.amazonaws.com%2Fimages%2F957759184-1529703875.jpg%3Fcrop%3D1.00xw%3A0.645xh%3B0%2C0.104xh%26resize%3D980%3A*&pageurl=http%3A%2F%2Flocalhost%3A8081%2F%23%2Fproducts%2F9&pagetl=Gentle+(63956)+WebDev+2&imgalt=a-Ciabatta+(which+translates+to+slipper!)+is+an+Italian+bread+made+with+wheat+flour%2C+salt%2C+yeast%2C+and+water.+Though+it%27s+texture+and+crust+vary+slightly+throughout+Italy%2C+the+essential+ingredients+remain+the+same.+Ciabatta+is+best+for+sandwiches+and+paninis%2C+naturally.&imgsz=301x301&selectedindex=0&id=https%3A%2F%2Fhips.hearstapps.com%2Fhmg-prod.s3.amazonaws.com%2Fimages%2F957759184-1529703875.jpg%3Fcrop%3D1.00xw%3A0.645xh%3B0%2C0.104xh%26resize%3D768%3A*&ccid=HJhemLxu&mediaurl=https%3A%2F%2Fhips.hearstapps.com%2Fhmg-prod.s3.amazonaws.com%2Fimages%2F957759184-1529703875.jpg%3Fcrop%3D1.00xw%3A0.645xh%3B0%2C0.104xh%26resize%3D768%3A*&exph=383&expw=395&vt=2&simid=607989991871097315&ck=D93A243AFF6ACD8E3FE6C901190D93E4&thid=OIP.HJhemLxu8pu035_spGI8QAAAAA&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.1c985e98bc6ef29bb4df9feca4623c40%3Frik%3DzCEm58XupF5%252bqg%26pid%3DImgRaw%26r%3D0&sim=11" ,                       
                         name: "title",
                         price: "2.50"
                         // later to be added: User
@@ -62,7 +62,7 @@ export default {
                     }
                 ],
                 productSrcImgDump: [ 
-                    { product_id: 1, srcImgData: "" }
+                    { product_id: -1, srcImgData: "https://www.bing.com/images/search?view=detailv2&form=SBIHVR&lightschemeovr=1&iss=sbi&q=imgurl:https%3A%2F%2Fhips.hearstapps.com%2Fhmg-prod.s3.amazonaws.com%2Fimages%2F957759184-1529703875.jpg%3Fcrop%3D1.00xw%3A0.645xh%3B0%2C0.104xh%26resize%3D980%3A*&pageurl=http%3A%2F%2Flocalhost%3A8081%2F%23%2Fproducts%2F9&pagetl=Gentle+(63956)+WebDev+2&imgalt=a-Ciabatta+(which+translates+to+slipper!)+is+an+Italian+bread+made+with+wheat+flour%2C+salt%2C+yeast%2C+and+water.+Though+it%27s+texture+and+crust+vary+slightly+throughout+Italy%2C+the+essential+ingredients+remain+the+same.+Ciabatta+is+best+for+sandwiches+and+paninis%2C+naturally.&imgsz=301x301&selectedindex=0&id=https%3A%2F%2Fhips.hearstapps.com%2Fhmg-prod.s3.amazonaws.com%2Fimages%2F957759184-1529703875.jpg%3Fcrop%3D1.00xw%3A0.645xh%3B0%2C0.104xh%26resize%3D768%3A*&ccid=HJhemLxu&mediaurl=https%3A%2F%2Fhips.hearstapps.com%2Fhmg-prod.s3.amazonaws.com%2Fimages%2F957759184-1529703875.jpg%3Fcrop%3D1.00xw%3A0.645xh%3B0%2C0.104xh%26resize%3D768%3A*&exph=383&expw=395&vt=2&simid=607989991871097315&ck=D93A243AFF6ACD8E3FE6C901190D93E4&thid=OIP.HJhemLxu8pu035_spGI8QAAAAA&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.1c985e98bc6ef29bb4df9feca4623c40%3Frik%3DzCEm58XupF5%252bqg%26pid%3DImgRaw%26r%3D0&sim=11" }
                 ]
             }
         }
