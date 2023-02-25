@@ -12,9 +12,9 @@
                             <div class="p-3 m-1 border border-primary">
 
                                 <!--- VIEW MODE -->
-                                <div v-if='this.updateMode == false' class="productForm">
+                                <div v-if='this.updateMode == true' class="productForm">
                                     <div class="card">
-                                        <img v-bind:src="this.data.srcImgData" class="maxSize" v-bind:alt="data.description">
+                                        <img v-bind:src="this.data.srcImgData" class="maxSize" v-bind:alt="this.data.description">
                                         <div class="card-body">
                                             <h2 class="card-title text-black">{{ this.data.name }}</h2>
                                             <p class="card-text text-black">{{ this.data.description }}</p>
@@ -22,15 +22,17 @@
                                         </div>
                                     </div>
                                     <div class="form-inline p-2 m-2 justify-content-center">
-                                    <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">Update</button>
+                                    <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">
+                                      Update
+                                    </button>
                                   </div>
                                 </div>
 
                                 <!--- UPDATE MODE -->
-                                <form v-if='this.updateMode == true' class="productForm">
+                                <form v-if='this.updateMode == false' class="productForm">
                                         <div class="form-inline p-5 m-5 justify-content-center">
                                             <div class="block">
-                                            <img v-bind:src="this.data.imageBlob" class="p-1 m-1 maxSize" v-bind:alt="data.description">
+                                            <img v-bind:src="this.data.imageBlob" class="p-1 m-1 maxSize" v-bind:alt="this.data.description">
                                             </div>
                                             <div class="block p-1 m-1 maxSize">
                                                     <!-- success upload -->
@@ -52,7 +54,9 @@
                                                 @change="onChanged">
                                                 </PictureInput>
                                                 <div class="d-grid justify-content-center pb-5 mb-5">
-                                                    <button class="btn btn-warning uploading-image overrideWidth" @click="attemptUpload">Upload</button>
+                                                  <button class="btn btn-warning uploading-image" @click="attemptUpload">
+                                                      Upload
+                                                    </button>
                                                 </div>
                                                 <!--- END IMAGE container -->
                                             </div>
@@ -70,7 +74,7 @@
                                         </button>
                                         <ul class="dropdown-menu justify-content-center" style="width: 50%">
                                             <div v-for='category in this.data?.categories' v-bind:key="category?.id">
-                                                <li class="dropdown-item btn btn-lg fs-4" @click="setCategory(category.id)">{{ category.name }}</li>
+                                                <li class="dropdown-item btn btn-lg fs-4" type="submit" @click="setCategory(category.id)">{{ category.name }}</li>
                                             </div>
                                         </ul>
                                         </div>
@@ -226,29 +230,29 @@ import PictureInput from './PictureInput.vue'
             }
         },
         attemptUpload() {
-            if (this.data.imageBlob) {
+            if (this.data.image){
                 const token = localStorage.getItem('JWT');
                 const formData = new FormData();
-                formData.append("upload-picture", this.data.imageBlob);
-                
+                formData.append("upload-picture", this.data.image);
                 axios.post(URL + 'products/picture', formData, 
                 {
                     headers:
                     {
-                      'Content-Type': "multipart/form-data",
-                      'Authorization': token
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': token
                     }
                 })
                 .then((response) => {
-                  if(response.status == 200) {
+                  if(response.status === 200) {
                     console.log("Image uploaded successfully ✨");
                     this.data.image = response.data;
+                    this.data.imageBlob = response.data;
                     this.data.uploadedMessage = "Image uploaded successfully";
                 }
                 })
-                .catch((error) => {
-                  console.log(error);
-                });
+                .catch((err) => {
+                    console.error(err);
+                })
             }
         },
         onChanged() {
@@ -312,10 +316,10 @@ import PictureInput from './PictureInput.vue'
             .then((response) => 
              {
               console.log(response.data);
-              this.data.srcImgData = response.data;
+              this.data.imageBlob = response.data;
             })
             .catch((error) => {
-              console.log(error);
+              console.log(error.response.data);
             })
           }
         }
