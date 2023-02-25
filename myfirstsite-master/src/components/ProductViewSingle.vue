@@ -21,11 +21,14 @@
                                             <div class="d-grid gap-2 d-md-block fs-3">€{{ this.data.price }}</div>
                                         </div>
                                     </div>
-                                    <div class="form-inline p-2 m-2 justify-content-center">
-                                    <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">
-                                      Update
-                                    </button>
-                                  </div>
+
+                                    <div v-if='this.$store.getters.isAuthenticated'>
+                                        <div class="form-inline p-2 m-2 justify-content-center">
+                                          <button class="btn type-primary btn-warning" type="submit" @click="changeUpdateMode()">
+                                            Update
+                                          </button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!--- UPDATE MODE -->
@@ -79,11 +82,11 @@
                                         </ul>
                                         </div>
                                         <!--- END CATEGORIE -->
-
-                                  <div class="form-inline p-2 m-2 justify-content-center">
-                                        <button class="btn type-primary btn-success btn-block p-1 m-1" type="submit" @click="updateProduct()">Save</button>
-                                        <button class="btn type-primary btn-danger btn-block p-1 m-1" type="submit" @click="deleteProduct()">Delete</button>
-                                  </div>
+                                          <div class="form-inline justify-content-center p-1 m-1">
+                                                <button class="btn type-primary btn-success btn-block p-1 m-1" type="submit" @click="updateProduct()">Save</button>
+                                                <button class="btn type-primary btn-danger btn-block p-1 m-1" type="submit" @click="deleteProduct()">Delete</button>
+                                          </div>
+                                  <p class="error form-inline justify-content-center p-1 m-1 fs-4" v-if='this.errormessage != null'>{{ this.errormessage }} </p>
                                 </div>
                           </div>
                       </div>
@@ -124,7 +127,7 @@ import PictureInput from './PictureInput.vue'
             ],
             categorySelected: { id: null, name: "Category" },
             updateMode: false,
-            errormessage: "error",
+            errormessage: "",
             uploadedMessage: "",
             srcImgData: "",
             imageBlob: ""

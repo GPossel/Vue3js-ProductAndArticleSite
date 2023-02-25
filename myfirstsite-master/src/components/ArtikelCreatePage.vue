@@ -7,19 +7,19 @@
         <h1>Write an article</h1>
         <div class="border border-primary">
         <p class="error text-danger" v-if='this.errormessage != null'>{{ this.errormessage }}</p>
-          <form class="articleForm">
-            <input class="border border-secondary form-control me-sm-2" placeholder="Title" v-model="title" type="text">
-            <input class="border border-secondary form-control me-sm-2" placeholder="Writer" v-model="writer" type="text">
-            <input class="border border-secondary form-control me-sm-2" placeholder="Small text" v-model="innerText" type="text">
-            <textarea class="border border-secondary form-control me-sm-2" placeholder="Write your article here..." v-model="fullText" type="text">
-            </textarea>
-            <button class="btn type-primary delete-button" type="submit" @click="addArticle()">
-              Add Article
-            </button>
-          </form>
-        </div>
-          </section>
-        </div>
+                <form class="articleForm">
+                  <input class="border border-secondary form-control me-sm-2" placeholder="Title" v-model="title" type="text">
+                  <input class="border border-secondary form-control me-sm-2" placeholder="Writer" v-model="writer" type="text">
+                  <input class="border border-secondary form-control me-sm-2" placeholder="Small text" v-model="innerText" type="text">
+                  <textarea class="border border-secondary form-control me-sm-2" placeholder="Write your article here..." v-model="fullText" type="text">
+                  </textarea>
+                  <button class="btn type-primary delete-button" type="submit" @click="addArticle()">
+                    Add Article
+                  </button>
+                </form>
+              </div>
+            </section>
+          </div>
         </div>
     </div>
 </template>

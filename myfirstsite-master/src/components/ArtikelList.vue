@@ -15,8 +15,10 @@
                                   <div class="writerBox"> {{ article.writer }} <br> {{ article.date }} </div> <br><br>
                                   <div class="innerTextBox"> {{ article.innerText }} </div>
                                   <div v-html="article.fullText" style="white-space: pre-wrap;"></div>
+                                  <div v-if='this.$store.getters.isAuthenticated'>
                                   <button class="btn btn-primary" @click="goToAdjust(article.id)">Adjust</button>
-                              </div>
+                                  </div>
+                                </div>
                           </div>
                     </div>
                   </div>

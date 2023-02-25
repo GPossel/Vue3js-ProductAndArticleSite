@@ -28,7 +28,6 @@
                             </div>
                         </form>
 
-
                     <div class="col col-md-auto">
                         <div class="d-grid py-3 p-5 justify-content-center">
                             <PictureInput 
