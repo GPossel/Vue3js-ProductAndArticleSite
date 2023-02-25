@@ -65,10 +65,10 @@
 </template>
 
 <script>
-import { URL } from '../const-url.js'
-import axios from 'axios'
 import SideMenuBar from './SideBarMenu.vue'
 import PictureInput from './PictureInput.vue'
+import axios from 'axios'
+import { URL } from '../const-url.js'
 
 export default {
     name: 'ProductCreatePage',
@@ -127,7 +127,7 @@ export default {
             })
             this.data.categorySelected.name = selected.name;
             this.data.categorySelected.id = selected.id;
-            console.log("Changed category into:" . catId);
+            console.log("Changed category into:" + catId);
         },
         attemptUpload() {
             if (this.data.image){
@@ -171,16 +171,17 @@ export default {
                 'category_id': this.data.categorySelected.id
             });
 
-            axios.post(URL + 'products/create', json, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': token
-                }
+            axios.post(URL + 'products/create', json,
+            {
+            headers: { 
+                'Content-Type' : "application/json",
+                'Authorization' : token
+            }
             })
             .then((response) => {
                 if(response.status == 200) {
                 console.log(response.status);
-                this.$router.push("/products");
+                this.$router.go(1); // hisory stack go 1 back,
                 }
             })
             .catch((error) => {
