@@ -1,5 +1,3 @@
-# Vue3js-ProductAndArticleSite
-
 # Vue3js Product and Article site
 A Vue project for creating, updating, deleting either Articels or Products. This project uses a SideBar for navigation purposes and a Login.
 This project uses Vue 3 js and for mark-up a combination of bootstrap and custom CSS.
